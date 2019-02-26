@@ -1,7 +1,12 @@
 #include <iostream>
 using namespace std;
+
+int f(int a, int b){
+    return a+b;
+}
+
 int main() {
 
-    cout << "Hello, World!" << std::endl;
+    cout << f(1, 2) << std::endl;
     return 0;
 }
