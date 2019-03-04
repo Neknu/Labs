@@ -1,6 +1,11 @@
 #include <bits/stdc++.h>
 
-using namespace std;
+//using namespace std;
+
+using std::cin;
+using std::cout;
+using std::vector;
+using std::swap;
 
 struct rectangle{
     float x1; // х coordinate of top-left angle
@@ -60,7 +65,7 @@ List* insert_arr(List* lst, int index, float x1, float y1, float x2, float y2) {
             cout << "Список переповнений! Елемент не був доданий!";
     }
     return lst;
-    
+
 };
 
 List* remove_arr(List* lst, int index) {
@@ -130,7 +135,7 @@ vector<rectangle>* insert_vector(vector<rectangle>* rectangles, int index, float
 
 vector<rectangle>* remove_vector(vector<rectangle>* rectangles, int index) {
     if(index < rectangles->size() && index >= 0) {
-        for (int i = index; i < rectangles->size(); i++)
+        for (int i = index; i < rectangles->size() - 1; i++)
             swap((*rectangles)[i], (*rectangles)[i + 1]);
         rectangles->pop_back();
     }
@@ -166,7 +171,7 @@ int length_vector(vector<rectangle>* rectangles) {
 Spysok* create_empty_list() {
     Spysok* spysok = new Spysok;
     spysok->length = 0;
-    spysok-> root = nullptr;
+    spysok->root = nullptr;
     return spysok;
 }
 
@@ -181,7 +186,7 @@ rectangle* add_element_list(rectangle* next, float x1, float y1, float x2, float
 }
 
 Spysok* append_list(Spysok* spysok, float x1, float y1, float x2, float y2) {
-    rectangle *rect;
+    rectangle* rect;
     if(spysok->length == 0) {
         rect = add_element_list(nullptr, x1, y1, x2, y2);
         spysok->root = rect;
@@ -196,6 +201,64 @@ Spysok* append_list(Spysok* spysok, float x1, float y1, float x2, float y2) {
     spysok->length++;
     return spysok;
 }
+
+rectangle* get_list(Spysok* spysok, int index) {
+    if(index < spysok->length && index >= 0) {
+        rectangle *curr = spysok->root;
+        for (int i = 0; i < index; i++)
+            curr = curr->next;
+        return curr;
+    }
+    return nullptr;
+}
+
+rectangle* set_list(Spysok* spysok, int index) {
+    return get_list(spysok, index);
+}
+
+Spysok* insert_list(Spysok* spysok, int index, float x1, float y1, float x2, float y2) {
+    if(index < spysok->length && index >= 0) {
+        rectangle* curr = get_list(spysok, index);
+        rectangle* rect = add_element_list(curr->next, curr->x1, curr->y1, curr->x2, curr->y2);
+        curr->x1 = x1;
+        curr->y1 = y1;
+        curr->x2 = x2;
+        curr->y2 = y2;
+        curr->next = rect;
+        spysok->length++;
+    }
+    else
+        cout << "Nothing happend!";
+    return spysok;
+}
+
+Spysok* remove_list(Spysok* spysok, int index){
+    if(index < spysok->length && index >= 0) {
+        rectangle *curr = spysok->root;
+        for (int i = 0; i < index - 1; i++)
+            curr = curr->next;
+        rectangle* tmp = curr->next;
+        curr->next = tmp->next;
+        delete tmp;
+        spysok->length--;
+    }
+    return spysok;
+}
+
+void print_all_list(Spysok* spysok){
+    rectangle* jump = spysok->root;
+    for(int i = 0; i < spysok->length; i++) {
+        cout << i << "coordinats: x1 - " << jump->x1 << " y1 - " << jump->y1 << " x2 - " << jump->x2 << " y2 - " << jump->y2 << "\n";
+        jump = jump->next;
+    }
+}
+
+int length_list(Spysok* spysok) {
+    return spysok->length;
+}
+
+
+
 
 
 int main() {
@@ -239,5 +302,26 @@ int main() {
     rectangle* ptr_vector = set_vector(rectangles, 0);
     cout << "This is y1 from this rectangle: " << ptr_vector->y1 << "\n";
     cout << "This is list length: " << length_vector(rectangles) << "\n";
+
+
+
+    cout << "\n" << "Third part(spysok)" << "\n";
+    Spysok* spysok = create_empty_list();
+
+
+    append_list(spysok, 1, 0.5, 1, 1);
+    append_list(spysok, 1, 1, 1, 1);
+    append_list(spysok, 0, 1, 1, 0);
+
+    insert_list(spysok, 1, 2, 2, 1, 1);
+    print_all_list(spysok);
+
+    remove_list(spysok, 2);
+    print_all_list(spysok);
+
+    rectangle* ptr_list = set_list(spysok, 0);
+    cout << "This is y1 from this rectangle: " << ptr_list->y1 << "\n";
+    cout << "This is list length: " << length_list(spysok) << "\n";
+
     return 0;
 }
