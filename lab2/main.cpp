@@ -6,6 +6,7 @@ using std::cin;
 using std::cout;
 using std::vector;
 using std::swap;
+using std::string;
 
 struct rectangle{
     float x1; // х coordinate of top-left angle
@@ -251,77 +252,318 @@ void print_all_list(Spysok* spysok){
         cout << i << "coordinats: x1 - " << jump->x1 << " y1 - " << jump->y1 << " x2 - " << jump->x2 << " y2 - " << jump->y2 << "\n";
         jump = jump->next;
     }
+    cout << "\n";
 }
 
 int length_list(Spysok* spysok) {
     return spysok->length;
 }
 
+void cout_select_type() {
+    cout << "Select your type: \n";
+    cout << "1 - array \n";
+    cout << "2 - vector \n";
+    cout << "3 - list \n";
+}
 
+void cout_operations() {
+    cout << "\n";
+    cout << "\n";
+    cout << "This is operations list: \n";
+    cout << "create_empty - create empty list \n";
+    cout << "append - add rect to the end \n";
+    cout << "insert - add rect after index \n";
+    cout << "remove - remove rect with index \n";
+    cout << "get - print all coordinats by index \n";
+    cout << "set - the same as get \n";
+    cout << "length - length of list \n";
+    cout << "print - print all elements of list \n";
+    cout << "exit - exit to first menu \n";
+}
 
 
 
 int main() {
 
-    cout << "\n" << "First part(array)" << "\n";
+    int type;
+    string operation;
+    List* lst;
+    bool create = false;
+    vector<rectangle>* rectangles;
+    Spysok* spysok;
+    float x1, y1, x2, y2;
+    int index;
 
-    List* lst = create_empty_arr();
+    while (true) {
+        if(type != 1 && type != 2 && type != 3) {
+            cout_select_type();
+            cin >> type;
+        }
+        switch (type) {
+            case 1: {
+                cout << "Your type is array! \n";
+                cout_operations();
+                cin >> operation;
+                if(operation == "create_empty") {
+                    lst = create_empty_arr();
+                    create = true;
+                }
+                if(create) {
+                    if (operation == "append") {
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        lst = append_arr(lst, x1, y1, x2, y2);
+                    }
+                    if (operation == "insert") {
+                        cout << "index - ";
+                        cin >> index;
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        lst = insert_arr(lst, index, x1, y1, x2, y2);
+                    }
+                    if (operation == "remove") {
+                        cout << "index - ";
+                        cin >> index;
+                        lst = remove_arr(lst, index);
+                    }
+                    if (operation == "get") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = get_arr(lst, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "set") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = set_arr(lst, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "length") {
+                        cout << "this is length of list: " << length_arr(lst) << "\n";
+                    }
+                    if (operation == "print") {
+                        print_all_arr(lst);
+                    }
+                    if (operation == "exit") {
+                        type = 0;
+                        create = false;
+                        continue;
+                    }
+                } else
+                   cout << "Create list please! \n";
+                break;
+            }
+            case 2: {
+                cout << "Your type is vector! \n";
+                cout_operations();
+                cin >> operation;
+                if(operation == "create_empty") {
+                    rectangles = create_empty_vector();
+                }
+                if(create) {
+                    if (operation == "append") {
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        append_vector(rectangles, x1, y1, x2, y2);
+                    }
+                    if (operation == "insert") {
+                        cout << "index - ";
+                        cin >> index;
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        insert_vector(rectangles, index, x1, y1, x2, y2);
+                    }
+                    if (operation == "remove") {
+                        cout << "index - ";
+                        cin >> index;
+                        remove_vector(rectangles, index);
+                    }
+                    if (operation == "get") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = get_vector(rectangles, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "set") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = set_vector(rectangles, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "length") {
+                        cout << "this is length of list: " << length_vector(rectangles) << "\n";
+                    }
+                    if (operation == "print") {
+                        print_all_vector(rectangles);
+                    }
+                    if (operation == "exit") {
+                        type = 0;
+                        continue;
+                    }
+                } else
+                   cout << "Create list please! \n";
+                break;
+            }
+            case 3: {
+                cout << "Your type is list! \n";
+                cout_operations();
+                cin >> operation;
+                if(operation == "create_empty") {
+                    spysok = create_empty_list();
+                    create = true;
+                }
+                if(create) {
+                    if (operation == "append") {
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        append_list(spysok, x1, y1, x2, y2);
+                    }
+                    if (operation == "insert") {
+                        cout << "index - ";
+                        cin >> index;
+                        cout << "x1 - ";
+                        cin >> x1;
+                        cout << "y1 - ";
+                        cin >> y1;
+                        cout << "x2 - ";
+                        cin >> x2;
+                        cout << "y2 - ";
+                        cin >> y2;
+                        insert_list(spysok, index, x1, y1, x2, y2);
+                    }
+                    if (operation == "remove") {
+                        cout << "index - ";
+                        cin >> index;
+                        remove_list(spysok, index);
+                    }
+                    if (operation == "get") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = get_list(spysok, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "set") {
+                        cout << "index - ";
+                        cin >> index;
+                        rectangle *rect = set_list(spysok, index);
+                        cout << "this is rectangle: x1 - " << rect->x1 << " y1 - " << rect->y1 << " x2 - " << rect->x2
+                             << " y2 - " << rect->y2 << "\n";
+                    }
+                    if (operation == "length") {
+                        cout << "this is length of list: " << length_list(spysok) << "\n";
+                    }
+                    if (operation == "print") {
+                        print_all_list(spysok);
+                    }
+                    if (operation == "exit") {
+                        type = 0;
+                        create = false;
+                        continue;
+                    }
+                } else
+                    cout << "Create list please! \n";
+                break;
+            }
 
-    append_arr(lst, 1, 0.5, 1, 1);
-    append_arr(lst, 1, 1, 1, 1);
-    append_arr(lst, 0, 1, 1, 0);
-
-    insert_arr(lst, 1, 2, 2, 1, 1);
-    print_all_arr(lst);
-
-    remove_arr(lst, 2);
-    print_all_arr(lst);
-
-    rectangle* ptr_arr = set_arr(lst, 0);
-    cout << "This is y1 from this rectangle: " << ptr_arr->y1 << "\n";
-    cout << "This is list length: " << length_arr(lst) << "\n";
-
-
-
-
-
-    cout << "\n" << "Second part(vector)" << "\n";
-
-    vector<rectangle>* rectangles = create_empty_vector();
-
-    append_vector(rectangles, 1, 0.5, 1, 1);
-    append_vector(rectangles, 1, 1, 1, 1);
-    append_vector(rectangles, 0, 1, 1, 0);
-
-    insert_vector(rectangles, 1, 2, 2, 1, 1);
-    print_all_vector(rectangles);
-
-    remove_vector(rectangles, 2);
-    print_all_vector(rectangles);
-
-    rectangle* ptr_vector = set_vector(rectangles, 0);
-    cout << "This is y1 from this rectangle: " << ptr_vector->y1 << "\n";
-    cout << "This is list length: " << length_vector(rectangles) << "\n";
-
-
-
-    cout << "\n" << "Third part(spysok)" << "\n";
-    Spysok* spysok = create_empty_list();
-
-
-    append_list(spysok, 1, 0.5, 1, 1);
-    append_list(spysok, 1, 1, 1, 1);
-    append_list(spysok, 0, 1, 1, 0);
-
-    insert_list(spysok, 1, 2, 2, 1, 1);
-    print_all_list(spysok);
-
-    remove_list(spysok, 2);
-    print_all_list(spysok);
-
-    rectangle* ptr_list = set_list(spysok, 0);
-    cout << "This is y1 from this rectangle: " << ptr_list->y1 << "\n";
-    cout << "This is list length: " << length_list(spysok) << "\n";
+            default: {
+                cout << "select type (1..3)! \n";
+            }
+    }
+}
+//    cout << "\n" << "First part(array)" << "\n";
+//
+//    List* lst = create_empty_arr();
+//
+//    append_arr(lst, 1, 0.5, 1, 1);
+//    append_arr(lst, 1, 1, 1, 1);
+//    append_arr(lst, 0, 1, 1, 0);
+//
+//    insert_arr(lst, 1, 2, 2, 1, 1);
+//    print_all_arr(lst);
+//
+//    remove_arr(lst, 2);
+//    print_all_arr(lst);
+//
+//    rectangle* ptr_arr = set_arr(lst, 0);
+//    cout << "This is y1 from this rectangle: " << ptr_arr->y1 << "\n";
+//    cout << "This is list length: " << length_arr(lst) << "\n";
+//
+//
+//
+//
+//
+//    cout << "\n" << "Second part(vector)" << "\n";
+//
+//    vector<rectangle>* rectangles = create_empty_vector();
+//
+//    append_vector(rectangles, 1, 0.5, 1, 1);
+//    append_vector(rectangles, 1, 1, 1, 1);
+//    append_vector(rectangles, 0, 1, 1, 0);
+//
+//    insert_vector(rectangles, 1, 2, 2, 1, 1);
+//    print_all_vector(rectangles);
+//
+//    remove_vector(rectangles, 2);
+//    print_all_vector(rectangles);
+//
+//    rectangle* ptr_vector = set_vector(rectangles, 0);
+//    cout << "This is y1 from this rectangle: " << ptr_vector->y1 << "\n";
+//    cout << "This is list length: " << length_vector(rectangles) << "\n";
+//
+//
+//
+//    cout << "\n" << "Third part(spysok)" << "\n";
+//    Spysok* spysok = create_empty_list();
+//
+//
+//    append_list(spysok, 1, 0.5, 1, 1);
+//    append_list(spysok, 1, 1, 1, 1);
+//    append_list(spysok, 0, 1, 1, 0);
+//
+//    insert_list(spysok, 1, 2, 2, 1, 1);
+//    print_all_list(spysok);
+//
+//    remove_list(spysok, 2);
+//    print_all_list(spysok);
+//
+//    rectangle* ptr_list = set_list(spysok, 0);
+//    cout << "This is y1 from this rectangle: " << ptr_list->y1 << "\n";
+//    cout << "This is list length: " << length_list(spysok) << "\n";
 
     return 0;
 }
