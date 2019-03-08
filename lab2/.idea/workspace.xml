@@ -42,11 +42,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="316" column="1" lean-forward="true" selection-start-line="316" selection-start-column="1" selection-end-line="316" selection-end-column="1" />
+            <state relative-caret-position="582">
+              <caret line="349" column="21" lean-forward="true" selection-start-line="349" selection-start-column="21" selection-end-line="349" selection-end-column="21" />
               <folding>
-                <marker date="1552057996042" expanded="true" signature="23061:24781" ph="..." />
-                <marker date="1552057996042" expanded="true" signature="24595:24781" ph="..." />
+                <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
               </folding>
             </state>
           </provider>
@@ -134,7 +133,7 @@
       <workItem from="1551726346303" duration="6721000" />
       <workItem from="1551812502287" duration="128000" />
       <workItem from="1551812646453" duration="5861000" />
-      <workItem from="1552035195898" duration="6055000" />
+      <workItem from="1552035195898" duration="6516000" />
     </task>
     <task id="LOCAL-00001" summary="also testing">
       <created>1551277827901</created>
@@ -178,11 +177,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551818661839</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="This is nearly end, ALL is working, so a little bit testing and the end">
+      <created>1552058387214</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1552058387214</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39347000" />
+    <option name="totallyTimeSpent" value="39808000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -202,7 +208,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.19263457" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4220963" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -228,7 +234,8 @@
     <MESSAGE value="testing change in main lab2" />
     <MESSAGE value="Now all is working without console" />
     <MESSAGE value="First part(with console) completed, only demo and benchmark last" />
-    <option name="LAST_COMMIT_MESSAGE" value="First part(with console) completed, only demo and benchmark last" />
+    <MESSAGE value="This is nearly end, ALL is working, so a little bit testing and the end" />
+    <option name="LAST_COMMIT_MESSAGE" value="This is nearly end, ALL is working, so a little bit testing and the end" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -236,11 +243,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="316" column="1" lean-forward="true" selection-start-line="316" selection-start-column="1" selection-end-line="316" selection-end-column="1" />
+        <state relative-caret-position="582">
+          <caret line="349" column="21" lean-forward="true" selection-start-line="349" selection-start-column="21" selection-end-line="349" selection-end-column="21" />
           <folding>
-            <marker date="1552057996042" expanded="true" signature="23061:24781" ph="..." />
-            <marker date="1552057996042" expanded="true" signature="24595:24781" ph="..." />
+            <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
           </folding>
         </state>
       </provider>

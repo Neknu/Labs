@@ -322,6 +322,7 @@ void cout_select_type() {
     cout << "1 - array \n";
     cout << "2 - vector \n";
     cout << "3 - list \n";
+    cout << "4 - exit \n";
 }
 
 void cout_operations() {
@@ -336,9 +337,9 @@ void cout_operations() {
     cout << "set - the same as get \n";
     cout << "length - length of list \n";
     cout << "print - print all elements of list \n";
-    cout << "exit - exit to first menu \n";
     cout << "demo - for demonstration(will create new list) \n";
     cout << "benchmark - for calculating time of program working \n";
+    cout << "exit - exit to first menu \n";
 }
 
 
@@ -355,7 +356,7 @@ int main() {
     int index;
 
     while (true) {
-        if(type != 1 && type != 2 && type != 3) {
+        if(type != 1 && type != 2 && type != 3 && type != 4) {
             cout_select_type();
             cin >> type;
         }
@@ -371,10 +372,10 @@ int main() {
                 if (operation == "demo") {
                     lst = create_empty_arr();
                     random_append_arr(lst, 6);
-                    cout << "6 rectangles was added: ";
+                    cout << "6 rectangles was added: \n";
                     print_all_arr(lst);
                     random_delete_arr(lst, 3);
-                    cout << "3 rectangles was deleted: ";
+                    cout << "3 rectangles was deleted: \n";
                     print_all_arr(lst);
                     create = true;
                 }
@@ -471,10 +472,10 @@ int main() {
                 if (operation == "demo") {
                     rectangles = create_empty_vector();
                     random_append_vector(rectangles, 6);
-                    cout << "6 rectangles was added: ";
+                    cout << "6 rectangles was added: \n";
                     print_all_vector(rectangles);
                     random_delete_vector(rectangles, 3);
-                    cout << "3 rectangles was deleted: ";
+                    cout << "3 rectangles was deleted: \n";
                     print_all_vector(rectangles);
                     create = true;
                 }
@@ -572,10 +573,10 @@ int main() {
                 if (operation == "demo") {
                     spysok = create_empty_list();
                     random_append_list(spysok, 6);
-                    cout << "6 rectangles was added: ";
+                    cout << "6 rectangles was added: \n";
                     print_all_list(spysok);
                     random_delete_list(spysok, 3);
-                    cout << "3 rectangles was deleted: ";
+                    cout << "3 rectangles was deleted: \n";
                     print_all_list(spysok);
                     create = true;
                 }
@@ -662,6 +663,10 @@ int main() {
                     cout << "Create list please! \n";
                 break;
             }
+            case 4: {
+                return 0;
+                break;
+            }
 
             default: {
                 cout << "select type (1..3)! \n";
@@ -669,5 +674,4 @@ int main() {
     }
 }
 
-    return 0;
 }
