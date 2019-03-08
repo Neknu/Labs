@@ -13,7 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f50c4847-1ccd-48f6-b0a6-310ea34f9790" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="349" column="21" lean-forward="true" selection-start-line="349" selection-start-column="21" selection-end-line="349" selection-end-column="21" />
+            <state relative-caret-position="362">
+              <caret line="359" column="31" selection-start-line="359" selection-start-column="31" selection-end-line="359" selection-end-column="31" />
               <folding>
                 <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
               </folding>
@@ -86,8 +85,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -133,7 +132,8 @@
       <workItem from="1551726346303" duration="6721000" />
       <workItem from="1551812502287" duration="128000" />
       <workItem from="1551812646453" duration="5861000" />
-      <workItem from="1552035195898" duration="6516000" />
+      <workItem from="1552035195898" duration="6869000" />
+      <workItem from="1552075157601" duration="62000" />
     </task>
     <task id="LOCAL-00001" summary="also testing">
       <created>1551277827901</created>
@@ -184,11 +184,18 @@
       <option name="project" value="LOCAL" />
       <updated>1552058387214</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Final version, ready to send">
+      <created>1552058742488</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1552058742488</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39808000" />
+    <option name="totallyTimeSpent" value="40223000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -201,14 +208,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19127516" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19395973" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4220963" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.19830029" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -235,7 +241,8 @@
     <MESSAGE value="Now all is working without console" />
     <MESSAGE value="First part(with console) completed, only demo and benchmark last" />
     <MESSAGE value="This is nearly end, ALL is working, so a little bit testing and the end" />
-    <option name="LAST_COMMIT_MESSAGE" value="This is nearly end, ALL is working, so a little bit testing and the end" />
+    <MESSAGE value="Final version, ready to send" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final version, ready to send" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -243,8 +250,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="349" column="21" lean-forward="true" selection-start-line="349" selection-start-column="21" selection-end-line="349" selection-end-column="21" />
+        <state relative-caret-position="362">
+          <caret line="359" column="31" selection-start-line="359" selection-start-column="31" selection-end-line="359" selection-end-column="31" />
           <folding>
             <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
           </folding>
