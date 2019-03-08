@@ -11,9 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f50c4847-1ccd-48f6-b0a6-310ea34f9790" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f50c4847-1ccd-48f6-b0a6-310ea34f9790" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,10 +39,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="359" column="31" selection-start-line="359" selection-start-column="31" selection-end-line="359" selection-end-column="31" />
+            <state relative-caret-position="252">
+              <caret line="354" selection-start-line="354" selection-end-line="354" />
               <folding>
-                <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
+                <marker date="1552076665940" expanded="true" signature="23199:23200" ph="..." />
               </folding>
             </state>
           </provider>
@@ -134,6 +132,8 @@
       <workItem from="1551812646453" duration="5861000" />
       <workItem from="1552035195898" duration="6869000" />
       <workItem from="1552075157601" duration="62000" />
+      <workItem from="1552076597215" duration="216000" />
+      <workItem from="1552076830724" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="also testing">
       <created>1551277827901</created>
@@ -191,11 +191,18 @@
       <option name="project" value="LOCAL" />
       <updated>1552058742488</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Final version, ready to send">
+      <created>1552076714051</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1552076714051</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40223000" />
+    <option name="totallyTimeSpent" value="40441000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -209,7 +216,7 @@
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19395973" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19932885" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -250,10 +257,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="359" column="31" selection-start-line="359" selection-start-column="31" selection-end-line="359" selection-end-column="31" />
+        <state relative-caret-position="252">
+          <caret line="354" selection-start-line="354" selection-end-line="354" />
           <folding>
-            <marker date="1552058613708" expanded="true" signature="23198:23199" ph="..." />
+            <marker date="1552076665940" expanded="true" signature="23199:23200" ph="..." />
           </folding>
         </state>
       </provider>
