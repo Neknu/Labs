@@ -352,6 +352,7 @@ int main() {
     bool create = false;
     vector<rectangle>* rectangles;
     Spysok* spysok;
+
     float x1, y1, x2, y2;
     int index;
 
