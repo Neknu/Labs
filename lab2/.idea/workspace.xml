@@ -42,11 +42,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="512" column="34" lean-forward="true" selection-start-line="512" selection-start-column="34" selection-end-line="512" selection-end-column="34" />
+            <state relative-caret-position="246">
+              <caret line="316" column="1" lean-forward="true" selection-start-line="316" selection-start-column="1" selection-end-line="316" selection-end-column="1" />
               <folding>
-                <marker date="1551818513735" expanded="true" signature="16531:18251" ph="..." />
-                <marker date="1551818513735" expanded="true" signature="18065:18251" ph="..." />
+                <marker date="1552057996042" expanded="true" signature="23061:24781" ph="..." />
+                <marker date="1552057996042" expanded="true" signature="24595:24781" ph="..." />
               </folding>
             </state>
           </provider>
@@ -87,8 +87,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -133,7 +133,8 @@
       <workItem from="1551428575654" duration="3413000" />
       <workItem from="1551726346303" duration="6721000" />
       <workItem from="1551812502287" duration="128000" />
-      <workItem from="1551812646453" duration="5734000" />
+      <workItem from="1551812646453" duration="5861000" />
+      <workItem from="1552035195898" duration="6055000" />
     </task>
     <task id="LOCAL-00001" summary="also testing">
       <created>1551277827901</created>
@@ -170,11 +171,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551731051052</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="First part(with console) completed, only demo and benchmark last">
+      <created>1551818661839</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1551818661839</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33165000" />
+    <option name="totallyTimeSpent" value="39347000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -189,12 +197,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1885906" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19127516" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.04249292" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.19263457" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -203,7 +211,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3286119" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.28045326" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.5552408" />
       <window_info anchor="bottom" id="CMake" order="12" weight="0.39660057" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -219,7 +227,8 @@
     <MESSAGE value="creating another folder fo lab2" />
     <MESSAGE value="testing change in main lab2" />
     <MESSAGE value="Now all is working without console" />
-    <option name="LAST_COMMIT_MESSAGE" value="Now all is working without console" />
+    <MESSAGE value="First part(with console) completed, only demo and benchmark last" />
+    <option name="LAST_COMMIT_MESSAGE" value="First part(with console) completed, only demo and benchmark last" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -227,11 +236,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="512" column="34" lean-forward="true" selection-start-line="512" selection-start-column="34" selection-end-line="512" selection-end-column="34" />
+        <state relative-caret-position="246">
+          <caret line="316" column="1" lean-forward="true" selection-start-line="316" selection-start-column="1" selection-end-line="316" selection-end-column="1" />
           <folding>
-            <marker date="1551818513735" expanded="true" signature="16531:18251" ph="..." />
-            <marker date="1551818513735" expanded="true" signature="18065:18251" ph="..." />
+            <marker date="1552057996042" expanded="true" signature="23061:24781" ph="..." />
+            <marker date="1552057996042" expanded="true" signature="24595:24781" ph="..." />
           </folding>
         </state>
       </provider>

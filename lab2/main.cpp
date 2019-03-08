@@ -18,8 +18,8 @@ struct rectangle{
 
 // First part (arrays)
 
-const int MAX_SIZE = 10000;
-
+const int MAX_SIZE = 100000;
+const float koef = 1000;
 struct List{
     rectangle rectangles[MAX_SIZE];
     int length;
@@ -101,6 +101,25 @@ int length_arr(List* lst) {
     return lst->length;
 }
 
+List* random_append_arr(List* lst ,int count) {
+    float x1, x2, y1, y2;
+     for(int i = 0; i < count; i++) {
+        x1 = (rand() % int(koef)) / koef;
+        y1 = (rand() % int(koef)) / koef;
+        x2 = (rand() % int(koef)) / koef;
+        y2 = (rand() % int(koef)) / koef;
+        append_arr(lst, x1, y1, x2, y2);
+    }
+    return lst;
+}
+
+List* random_delete_arr(List* lst ,int count) {
+    float x1, x2, y1, y2;
+    for(int i = 0; i < count; i++) {
+        remove_arr(lst, i);
+    }
+    return lst;
+}
 
 // Second part (vector)
 
@@ -164,6 +183,25 @@ void print_all_vector(vector<rectangle>* rectangles) {
 
 int length_vector(vector<rectangle>* rectangles) {
     return rectangles->size();
+}
+
+vector<rectangle>* random_append_vector(vector<rectangle>* rectangles ,int count) {
+    float x1, x2, y1, y2;
+    for(int i = 0; i < count; i++) {
+        x1 = (rand() % int(koef)) / koef;
+        y1 = (rand() % int(koef)) / koef;
+        x2 = (rand() % int(koef)) / koef;
+        y2 = (rand() % int(koef)) / koef;
+        append_vector(rectangles, x1, y1, x2, y2);
+    }
+    return rectangles;
+}
+
+vector<rectangle>* random_delete_vector(vector<rectangle>* rectangles ,int count) {
+    for(int i = 0; i < count; i++) {
+        remove_vector(rectangles, i);
+    }
+    return rectangles;
 }
 
 
@@ -259,6 +297,26 @@ int length_list(Spysok* spysok) {
     return spysok->length;
 }
 
+Spysok* random_append_list(Spysok* spysok ,int count) {
+    float x1, x2, y1, y2;
+    for(int i = 0; i < count; i++) {
+        x1 = (rand() % int(koef)) / koef;
+        y1 = (rand() % int(koef)) / koef;
+        x2 = (rand() % int(koef)) / koef;
+        y2 = (rand() % int(koef)) / koef;
+        append_list(spysok, x1, y1, x2, y2);
+    }
+    return spysok;
+}
+
+Spysok* random_delete_list(Spysok* spysok, int count) {
+    for(int i = 0; i < count; i++) {
+        remove_list(spysok, i);
+    }
+    return spysok;
+}
+
+
 void cout_select_type() {
     cout << "Select your type: \n";
     cout << "1 - array \n";
@@ -279,6 +337,8 @@ void cout_operations() {
     cout << "length - length of list \n";
     cout << "print - print all elements of list \n";
     cout << "exit - exit to first menu \n";
+    cout << "demo - for demonstration(will create new list) \n";
+    cout << "benchmark - for calculating time of program working \n";
 }
 
 
@@ -307,6 +367,40 @@ int main() {
                 if(operation == "create_empty") {
                     lst = create_empty_arr();
                     create = true;
+                }
+                if (operation == "demo") {
+                    lst = create_empty_arr();
+                    random_append_arr(lst, 6);
+                    cout << "6 rectangles was added: ";
+                    print_all_arr(lst);
+                    random_delete_arr(lst, 3);
+                    cout << "3 rectangles was deleted: ";
+                    print_all_arr(lst);
+                    create = true;
+                }
+                if (operation == "benchmark") {
+                    int N = 6;
+                    using namespace std::chrono;
+                    duration<double> time_span;
+                    float t;
+                    do {
+                        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+                        lst = create_empty_arr();
+                        // here random
+                        random_append_arr(lst, N);
+                        // this is very slow function so speed will be low
+                        random_delete_arr(lst, N / 2);
+
+                        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                        time_span = duration_cast<duration<double>>(t2 - t1);
+                        t = time_span.count();
+                        N = N * 2;
+                    }
+                    while(N * 2 < MAX_SIZE);
+                    create = true;
+                    cout << "\n" <<  "It took me " << t << " seconds. \n";
+                    cout << "N = " << N << "\n";
                 }
                 if(create) {
                     if (operation == "append") {
@@ -374,6 +468,41 @@ int main() {
                 if(operation == "create_empty") {
                     rectangles = create_empty_vector();
                 }
+                if (operation == "demo") {
+                    rectangles = create_empty_vector();
+                    random_append_vector(rectangles, 6);
+                    cout << "6 rectangles was added: ";
+                    print_all_vector(rectangles);
+                    random_delete_vector(rectangles, 3);
+                    cout << "3 rectangles was deleted: ";
+                    print_all_vector(rectangles);
+                    create = true;
+                }
+                if (operation == "benchmark") {
+                    int N = 6;
+                    using namespace std::chrono;
+                    duration<double> time_span;
+                    float t;
+                    do {
+                        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+                        rectangles = create_empty_vector();
+                        // here random
+                        random_append_vector(rectangles, N);
+                        // if we comment next stroke speed of program extremely increases, so let try it
+                        //random_delete_vector(rectangles, N / 2);
+
+                        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                        time_span = duration_cast<duration<double>>(t2 - t1);
+                        t = time_span.count();
+                        N = N * 2;
+                    }
+                    //only 1 s because memory limit
+                    while(t < 1);
+                    create = true;
+                    cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+                    cout << "N = " << N << "\n";
+                }
                 if(create) {
                     if (operation == "append") {
                         cout << "x1 - ";
@@ -440,6 +569,40 @@ int main() {
                     spysok = create_empty_list();
                     create = true;
                 }
+                if (operation == "demo") {
+                    spysok = create_empty_list();
+                    random_append_list(spysok, 6);
+                    cout << "6 rectangles was added: ";
+                    print_all_list(spysok);
+                    random_delete_list(spysok, 3);
+                    cout << "3 rectangles was deleted: ";
+                    print_all_list(spysok);
+                    create = true;
+                }
+                if (operation == "benchmark") {
+                    int N = 6;
+                    using namespace std::chrono;
+                    duration<double> time_span;
+                    float t;
+                    do {
+                        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+                        spysok = create_empty_list();
+                        // here random
+                        random_append_list(spysok, N);
+                        // here speed of deleting is normal
+                        random_delete_list(spysok, N / 2);
+
+                        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                        time_span = duration_cast<duration<double>>(t2 - t1);
+                        t = time_span.count();
+                        N = N * 2;
+                    }
+                    while(t < 10);
+                    create = true;
+                    cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+                    cout << "N = " << N << "\n";
+                }
                 if(create) {
                     if (operation == "append") {
                         cout << "x1 - ";
@@ -505,65 +668,6 @@ int main() {
             }
     }
 }
-//    cout << "\n" << "First part(array)" << "\n";
-//
-//    List* lst = create_empty_arr();
-//
-//    append_arr(lst, 1, 0.5, 1, 1);
-//    append_arr(lst, 1, 1, 1, 1);
-//    append_arr(lst, 0, 1, 1, 0);
-//
-//    insert_arr(lst, 1, 2, 2, 1, 1);
-//    print_all_arr(lst);
-//
-//    remove_arr(lst, 2);
-//    print_all_arr(lst);
-//
-//    rectangle* ptr_arr = set_arr(lst, 0);
-//    cout << "This is y1 from this rectangle: " << ptr_arr->y1 << "\n";
-//    cout << "This is list length: " << length_arr(lst) << "\n";
-//
-//
-//
-//
-//
-//    cout << "\n" << "Second part(vector)" << "\n";
-//
-//    vector<rectangle>* rectangles = create_empty_vector();
-//
-//    append_vector(rectangles, 1, 0.5, 1, 1);
-//    append_vector(rectangles, 1, 1, 1, 1);
-//    append_vector(rectangles, 0, 1, 1, 0);
-//
-//    insert_vector(rectangles, 1, 2, 2, 1, 1);
-//    print_all_vector(rectangles);
-//
-//    remove_vector(rectangles, 2);
-//    print_all_vector(rectangles);
-//
-//    rectangle* ptr_vector = set_vector(rectangles, 0);
-//    cout << "This is y1 from this rectangle: " << ptr_vector->y1 << "\n";
-//    cout << "This is list length: " << length_vector(rectangles) << "\n";
-//
-//
-//
-//    cout << "\n" << "Third part(spysok)" << "\n";
-//    Spysok* spysok = create_empty_list();
-//
-//
-//    append_list(spysok, 1, 0.5, 1, 1);
-//    append_list(spysok, 1, 1, 1, 1);
-//    append_list(spysok, 0, 1, 1, 0);
-//
-//    insert_list(spysok, 1, 2, 2, 1, 1);
-//    print_all_list(spysok);
-//
-//    remove_list(spysok, 2);
-//    print_all_list(spysok);
-//
-//    rectangle* ptr_list = set_list(spysok, 0);
-//    cout << "This is y1 from this rectangle: " << ptr_list->y1 << "\n";
-//    cout << "This is list length: " << length_list(spysok) << "\n";
 
     return 0;
 }
