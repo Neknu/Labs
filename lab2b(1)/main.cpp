@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <chrono>
 
 using std::cout;
 using std::cin;
@@ -23,6 +24,7 @@ List* create_empty() {
 }
 
 Node* get(List* lst, int index) {
+    if(index < 0) index = lst->length + index;
     if(index < lst->length && index >= 0) {
         Node *curr = lst->root;
         for (int i = 0; i < index; i++)
@@ -33,10 +35,12 @@ Node* get(List* lst, int index) {
 }
 
 Node* set(List* lst, int index) {
+    if(index < 0) index = lst->length + index;
     return get(lst, index);
 }
 
 List* insert(List* lst, int index, int data) {
+    if(index < 0) index = lst->length + index;
     if(index == 0) {
         Node* curr = new Node;
         curr->data = data;
@@ -65,6 +69,7 @@ List* insert(List* lst, int index, int data) {
 }
 
 List* remove(List* lst, int index){
+    if(index < 0) index = lst->length + index;
     if(index == 0) {
         Node* del = lst->root;
         lst->root = del->next;
@@ -98,6 +103,8 @@ void cout_operations() {
     cout << "insert - add element by index \n";
     cout << "remove - delete element by index \n";
     cout << "print - print all elements \n";
+    cout <<" demo - for demonstration \n";
+    cout << "benchmark - for calculating time of program working \n";
     cout << "exit - leaves the program( \n";
 }
 
@@ -112,28 +119,71 @@ int main() {
         if(operation == "get") {
             cout << "index - ";
             cin >> index;
-            if(index < 0) index = lst->length + index;
             cout << "\n" << "this is data from node: " << get(lst, index)->data << "\n";
         }
         if(operation == "set") {
             cout << "index - ";
             cin >> index;
-            if(index < 0) index = lst->length + index;
             cout << "\n" << "this is data from node: " << set(lst, index)->data << "\n";
         }
         if(operation == "insert") {
             cout << "index - ";
             cin >> index;
-            if(index < 0) index = lst->length + index;
             cout << "data - ";
             cin >> data;
             insert(lst, index, data);
         }
         if(operation == "remove") {
             cout << "index - ";
-            if(index < 0) index = lst->length + index;
             cin >> data;
             remove(lst, index);
+        }
+        if(operation == "demo") {
+            cout << "adding new elements: \n";
+            for(int i = 0; i < 3; i ++) {
+                insert(lst, i, i + 1);
+            }
+            print_all(lst);
+
+            cout << "inserting element by index 0 \n";
+            insert(lst, 0, 0);
+            print_all(lst);
+
+            cout << "remove element by id -1 \n";
+            remove(lst, -1);
+            print_all(lst);
+
+            cout << "set element by id -2 \n";
+            Node* nd = set(lst, -2);
+            cout << "this is data from this node: " << nd->data << "\n";
+
+        }
+        if(operation == "benchmark") {
+            int N = 6;
+            using namespace std::chrono;
+            duration<double> time_span;
+            float t;
+            do {
+                List* lst = create_empty();
+                high_resolution_clock::time_point t1 = high_resolution_clock::now();
+                for(int i = 0; i < N; i ++) {
+                    insert(lst, i, i + 1);
+                }
+
+                for(int i = 0; i < N / 2; i ++) {
+                    remove(lst, i);
+                }
+                high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                time_span = duration_cast<duration<double>>(t2 - t1);
+                t = time_span.count();
+                N = N * 2;
+            }
+
+            while(t < 10);
+            cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+            cout << "N = " << N << "\n";
+
         }
         if(operation == "print") {
             print_all(lst);
