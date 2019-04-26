@@ -23,11 +23,11 @@ int rand_num(int max) {
 }
 
 
-void insertion_sort(string arr[], int n)
+void insertion_sort(string arr[], int low, int high)
 {
     int i, j;
     string key;
-    for (i = 1; i < n; i++) {
+    for (i = low + 1; i < high + 1; i++) {
         key = arr[i];
         j = i - 1;
 
@@ -41,24 +41,17 @@ void insertion_sort(string arr[], int n)
 
 
 
-
-/* This function takes last element as pivot, places
-   the pivot element at its correct position in sorted
-    array, and places all smaller (smaller than pivot)
-   to left of pivot and all greater elements to right
-   of pivot */
 int partition(string arr[], int low, int high)
 {
-    string pivot = arr[high];    // pivot
-    int i = (low - 1);  // Index of smaller element
+    string pivot = arr[high];
+    int i = (low - 1);
 
     for (int j = low; j <= high- 1; j++)
     {
-        // If current element is smaller than or
-        // equal to pivot
+
         if (arr[j] <= pivot)
         {
-            i++;    // increment index of smaller element
+            i++;
             swap(arr[i], arr[j]);
         }
     }
@@ -66,20 +59,12 @@ int partition(string arr[], int low, int high)
     return (i + 1);
 }
 
-/* The main function that implements QuickSort
- arr[] --> Array to be sorted,
-  low  --> Starting index,
-  high  --> Ending index */
+
 void quick_sort(string arr[], int low, int high)
 {
     if (low < high)
     {
-        /* pi is partitioning index, arr[p] is now
-           at right place */
         int pi = partition(arr, low, high);
-
-        // Separately sort elements before
-        // partition and after partition
         quick_sort(arr, low, pi - 1);
         quick_sort(arr, pi + 1, high);
     }
@@ -88,7 +73,6 @@ void quick_sort(string arr[], int low, int high)
 
 
 
-// A utility function to print an array of size n
 void print_array(string arr[], int n)
 {
     int i;
@@ -101,7 +85,7 @@ void random_words(string arr[], int n) {
     for (int i = 0; i < n; i++) {
         int kol = rand_num(LENGTH);
         for (int j = 0; j < kol; j++)
-            arr[i] += char(rand_num(LENGTH) + 48);
+            arr[i] += char(rand_num(LENGTH) + 60); // 60 just for 'A..Z'
 
     }
 }
@@ -110,11 +94,11 @@ void random_words(string arr[], int n) {
 int main()
 {
     //string arr[] = { "RA", "YB", "ACB", "DBBBBB", "gagagagaga", "hh", "ATT" };
-    int count = rand_num(5);
+    int count = rand_num(20);
     cout << count << "\n";
     random_words(arr, count);
-    //insertion_sort(arr, count);
-    quick_sort(arr, 0, count - 1);
+    insertion_sort(arr, 0, count - 1);
+//    quick_sort(arr, 0, count - 1);
     print_array(arr, count);
     return 0;
 }
