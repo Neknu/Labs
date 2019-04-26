@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include <ctime>
 #include <random>
+#include <algorithm>
+#include <iterator>
 
 using std::string;
 using std::cout;
@@ -171,13 +172,14 @@ void random_words(string arr[], int n) {
 int main()
 {
     //string arr[] = { "RA", "YB", "ACB", "DBBBBB", "gagagagaga", "hh", "ATT" };
-    int count = rand_num(100000);
+    int count = rand_num(100);
     cout << count << "\n";
     random_words(arr, count);
     //insertion_sort(arr, 0, count - 1);
     //quick_sort(arr, 0, count - 1);
     //merge_sort(arr, 0, count - 1);
-    combine_sort(arr, 0, count - 1, 10);
+    //combine_sort(arr, 0, count - 1, 10);
+    std::sort(arr, arr + count);
     print_array(arr, count);
     return 0;
 }
