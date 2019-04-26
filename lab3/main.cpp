@@ -14,7 +14,7 @@ const int LENGTH = 10;
 string arr[LENGTH*5];
 
 
-int rand_num(int max) {
+int rand_num(double max) {
     static std::random_device rd;
     static std::seed_seq seed { rd(), static_cast<unsigned int>(time(nullptr))};
     static std::mt19937_64 gen(seed);
@@ -72,6 +72,70 @@ void quick_sort(string arr[], int low, int high)
 
 
 
+void merge(string arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 =  r - m;
+
+
+    string L[n1], R[n2];
+
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1+ j];
+
+
+    i = 0; // Initial index of first array
+    j = 0; // Initial index of second array
+    k = l;// Initial index of merged array
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void merge_sort(string arr[], int l, int r)
+{
+    if (l < r)
+    {
+
+        int m = (l+r)/2;
+        
+        merge_sort(arr, l, m);
+        merge_sort(arr, m+1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+
 
 void print_array(string arr[], int n)
 {
@@ -97,8 +161,9 @@ int main()
     int count = rand_num(20);
     cout << count << "\n";
     random_words(arr, count);
-    insertion_sort(arr, 0, count - 1);
-//    quick_sort(arr, 0, count - 1);
+    //insertion_sort(arr, 0, count - 1);
+    //quick_sort(arr, 0, count - 1);
+    merge_sort(arr, 0, count - 1);
     print_array(arr, count);
     return 0;
 }
