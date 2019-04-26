@@ -3,7 +3,7 @@
 #include <ctime>
 #include <random>
 #include <algorithm>
-#include <iterator>
+#include <chrono>
 
 using std::string;
 using std::cout;
@@ -11,7 +11,7 @@ using std::cin;
 using std::endl;
 
 const int LENGTH = 10;
-string arr[1000000];
+string arr[30000000];
 
 
 int rand_num(double max) {
@@ -168,18 +168,103 @@ void random_words(string arr[], int n) {
     }
 }
 
+
+void cout_operations() {
+    cout <<"\n";
+    cout << "start - to start console working \n";
+    cout << "benchmark - for demonstration \n";
+    cout << "exit - leaves the program( \n";
+    cout << "\n";
+}
+
+void cout_algorithms() {
+    cout <<"\n";
+    cout << "insertion - insertion sort \n";
+    cout << "quick - quick sort \n";
+    cout << "merge - merge sort \n";
+    cout << "combine - combine sort (merge and insertion) \n";
+    cout << "\n";
+}
+
+
 /* Driver program to test insertion sort */
 int main()
 {
     //string arr[] = { "RA", "YB", "ACB", "DBBBBB", "gagagagaga", "hh", "ATT" };
-    int count = rand_num(100);
-    cout << count << "\n";
-    random_words(arr, count);
-    //insertion_sort(arr, 0, count - 1);
-    //quick_sort(arr, 0, count - 1);
-    //merge_sort(arr, 0, count - 1);
-    //combine_sort(arr, 0, count - 1, 10);
-    std::sort(arr, arr + count);
-    print_array(arr, count);
-    return 0;
+    string operation, algorithm;
+    while(true) {
+        if(algorithm == "") {
+            cout << "Select way to sort - \n";
+            cout_algorithms();
+            cin >> algorithm;
+        }
+        if(algorithm != "quick" && algorithm != "merge" && algorithm != "insertion" && algorithm != "combine") {
+            cout << "Select real algorithm!";
+            cout_algorithms();
+            cin >> algorithm;
+            continue;
+        }
+        cout_operations();
+        cin >> operation;
+        if(operation == "start") {
+            cout << "Select size of array - \n";
+            int N;
+            cin >> N;
+            random_words(arr, N); // generating random array
+
+            cout << "It is your array - \n";
+            print_array(arr, N);
+
+            if(algorithm == "insertion")
+                insertion_sort(arr, 0 , N - 1);
+            if(algorithm == "quick")
+                quick_sort(arr, 0 , N - 1);
+            if(algorithm == "merge")
+                merge_sort(arr, 0 , N - 1);
+            if(algorithm == "combine") {
+                cout << "Select edge between insertion and merge sort - \n";
+                int edge;
+                cin >> edge;
+                combine_sort(arr, 0 , N - 1, edge);
+            }
+            cout << "It is sorted array - \n";
+            print_array(arr, N);
+        }
+        if(operation == "benchmark") {
+            int N = 6;
+            cout << "processing..";
+            using namespace std::chrono;
+            duration<double> time_span;
+            float t;
+            do {
+
+                high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                random_words(arr, N); // generating random array
+                //add this line to try with sorted array
+                //std::sort(arr, arr + N);
+                if(algorithm == "insertion")
+                    insertion_sort(arr, 0 , N - 1);
+                if(algorithm == "quick")
+                    quick_sort(arr, 0 , N - 1);
+                if(algorithm == "merge")
+                    merge_sort(arr, 0 , N - 1);
+                if(algorithm == "combine")
+                    combine_sort(arr, 0 , N - 1, 10);
+
+                high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                time_span = duration_cast<duration<double>>(t2 - t1);
+                t = time_span.count();
+                N = N * 2;
+            }
+
+            while(t < 0.1);
+            cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+            cout << "N = " << N << "\n";
+        }
+        if(operation == "exit") {
+            return 0;
+        }
+    }
 }

@@ -47,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="173" column="29" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
+            <state relative-caret-position="148">
+              <caret line="268" column="5" lean-forward="true" selection-start-line="268" selection-start-column="5" selection-end-line="268" selection-end-column="5" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -131,7 +131,7 @@
       <updated>1555662010565</updated>
       <workItem from="1555662016613" duration="1143000" />
       <workItem from="1556264446603" duration="570000" />
-      <workItem from="1556265534954" duration="9187000" />
+      <workItem from="1556265534954" duration="12599000" />
     </task>
     <task id="LOCAL-00001" summary="starting lab 3">
       <created>1555662307722</created>
@@ -175,11 +175,25 @@
       <option name="project" value="LOCAL" />
       <updated>1556298734867</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="combine sort also working (fixed one bug in the insrtion sort)">
+      <created>1556300629904</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1556300629904</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added sort from library algorithm">
+      <created>1556300901334</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1556300901334</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10900000" />
+    <option name="totallyTimeSpent" value="14312000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="36" width="1550" height="835" extended-state="6" />
@@ -191,7 +205,7 @@
       <window_info anchor="bottom" id="Messages" weight="0.39118066" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2859175" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4509246" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -216,7 +230,9 @@
     <MESSAGE value="quicksort now working" />
     <MESSAGE value="modify selection sort" />
     <MESSAGE value="merge sort is working now" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge sort is working now" />
+    <MESSAGE value="combine sort also working (fixed one bug in the insrtion sort)" />
+    <MESSAGE value="added sort from library algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="added sort from library algorithm" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -224,8 +240,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="173" column="29" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
+        <state relative-caret-position="148">
+          <caret line="268" column="5" lean-forward="true" selection-start-line="268" selection-start-column="5" selection-end-line="268" selection-end-column="5" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
