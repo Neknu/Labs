@@ -2,7 +2,6 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
-#include <map>
 #include <random>
 
 using std::string;
@@ -11,7 +10,7 @@ using std::cin;
 using std::endl;
 
 const int LENGTH = 10;
-string arr[LENGTH*5];
+string arr[1000000];
 
 
 int rand_num(double max) {
@@ -31,7 +30,7 @@ void insertion_sort(string arr[], int low, int high)
         key = arr[i];
         j = i - 1;
 
-        while (j >= 0 && arr[j] > key) {
+        while (j >= low && arr[j] > key) {
             arr[j + 1] = arr[j];
             j = j - 1;
         }
@@ -125,13 +124,28 @@ void merge_sort(string arr[], int l, int r)
 {
     if (l < r)
     {
-
         int m = (l+r)/2;
         
         merge_sort(arr, l, m);
         merge_sort(arr, m+1, r);
 
         merge(arr, l, m, r);
+    }
+}
+
+
+
+void combine_sort(string arr[], int l, int r, int edge) {
+    if(r-l > edge) {
+        int m = (l+r)/2;
+
+        combine_sort(arr, l, m, edge);
+        combine_sort(arr, m+1, r, edge);
+
+        merge(arr, l, m, r);
+    }
+    else {
+        insertion_sort(arr, l, r);
     }
 }
 
@@ -150,7 +164,6 @@ void random_words(string arr[], int n) {
         int kol = rand_num(LENGTH);
         for (int j = 0; j < kol; j++)
             arr[i] += char(rand_num(LENGTH) + 60); // 60 just for 'A..Z'
-
     }
 }
 
@@ -158,12 +171,13 @@ void random_words(string arr[], int n) {
 int main()
 {
     //string arr[] = { "RA", "YB", "ACB", "DBBBBB", "gagagagaga", "hh", "ATT" };
-    int count = rand_num(20);
+    int count = rand_num(100000);
     cout << count << "\n";
     random_words(arr, count);
     //insertion_sort(arr, 0, count - 1);
     //quick_sort(arr, 0, count - 1);
-    merge_sort(arr, 0, count - 1);
+    //merge_sort(arr, 0, count - 1);
+    combine_sort(arr, 0, count - 1, 10);
     print_array(arr, count);
     return 0;
 }
