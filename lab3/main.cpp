@@ -11,7 +11,7 @@ using std::cin;
 using std::endl;
 
 const int LENGTH = 10;
-string arr[30000000];
+string arr[10000000];
 
 
 int rand_num(double max) {
@@ -237,10 +237,10 @@ int main()
             duration<double> time_span;
             float t;
             do {
-
+                N = N * 2;
+                random_words(arr, N + 5); // generating random array
                 high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-                random_words(arr, N); // generating random array
                 //add this line to try with sorted array
                 //std::sort(arr, arr + N);
                 if(algorithm == "insertion")
@@ -253,13 +253,12 @@ int main()
                     combine_sort(arr, 0 , N - 1, 10);
 
                 high_resolution_clock::time_point t2 = high_resolution_clock::now();
-
+                //cout << N << "   ";
                 time_span = duration_cast<duration<double>>(t2 - t1);
                 t = time_span.count();
-                N = N * 2;
             }
 
-            while(t < 0.1);
+            while(t < 0.05);
             cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
             cout << "N = " << N << "\n";
         }
