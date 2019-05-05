@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-
 using std::string;
 using std::cin;
 using std::cout;
@@ -85,16 +84,6 @@ Node* find_son(Node* dad, int data) {
 }
 
 
-void cout_operations() {
-    cout << endl;
-    cout << "Select operation:" << "\n";
-    cout << "create_tree" << "\n";
-    cout << "add_son" << "\n";
-    cout << "print_tree" << "\n";
-    cout << "exit" << "\n";
-}
-
-
 void cout_finding_operations() {
     cout << endl;
     cout << "Select operation:" << "\n";
@@ -144,6 +133,17 @@ void print_tree_rekurs(Tree* tre, Node* root) {
         cout_path_to_node(root);
 }
 
+void set_correct_depth(Tree* tre, Node* root, int depth) {
+    Node* curr = root->son;
+    cout << root->data;
+    while(curr) {
+        set_correct_depth(tre, curr, depth + 1);
+        curr = curr->next;
+    }
+    root->depth = depth;
+    tre->depth = std::max(tre->depth, depth);
+}
+
 
 Node* add_son_to_tree(Tree* tre) {
 
@@ -160,6 +160,91 @@ Node* add_son_to_tree(Tree* tre) {
     if(!new_son)
         cout << "this son already exists!" << "\n";
     return new_son;
+}
+
+void delete_son(Tree* tre, Node* to_del) {
+    if(tre->length == 1) {
+        delete to_del;
+        delete tre;
+    }
+    if(to_del->next == nullptr) {
+        to_del->dad->son = to_del->son;
+        Node* curr = to_del->son;
+        while(curr) {
+            curr->dad = to_del->dad;
+            curr = curr->next;
+        }
+    }
+    else if(to_del->dad->son->data == to_del->data) {  // data is unique at one level
+        to_del->dad->son = to_del->son;
+        Node* curr = to_del->son;
+        if(curr) {
+            while (curr->next) {
+                curr->dad = to_del->dad;
+                curr = curr->next;
+            }
+            curr->dad = to_del->dad;
+            curr->next = to_del->next;
+        }
+    }
+    else {
+        Node* son = to_del->dad->son;
+        while(son->next->data != to_del->data && son->next != nullptr)
+            son = son->next;
+        Node* curr = to_del->son;
+        if(curr) {
+            son->next = curr;
+            while (curr->next) {
+                curr->dad = to_del->dad;
+                curr = curr->next;
+            }
+            curr->dad = to_del->dad;
+            curr->next = to_del->next;
+        }
+        else{
+            son->next = to_del->next;
+        }
+    }
+    delete to_del;
+    tre->length--;
+    tre->depth = 1;
+    set_correct_depth(tre, tre->root, 1);
+}
+
+Tree* delete_son_from_tree(Tree* tre) {
+
+    Node* curr = find_node_in_tree(tre);
+    if(!curr) {
+        cout << "something went wrong, redo deleting";
+        return tre;
+    }
+    delete_son(tre, curr);
+    return tre;
+}
+
+Tree* build_demo_tree() {
+    Tree* tre = create_empty_tree();
+    tre = add_root(tre, 1);
+    add_new_son(tre, tre->root, 2);
+    add_new_son(tre, tre->root, 3);
+    add_new_son(tre, tre->root->son, 4);
+    add_new_son(tre, tre->root->son, 5);
+    add_new_son(tre, tre->root->son, 6);
+    add_new_son(tre, tre->root->son->son->next, 7);
+    add_new_son(tre, tre->root->son->son->next, 8);
+    return tre;
+}
+
+
+void cout_operations() {
+    cout << endl;
+    cout << "Select operation:" << "\n";
+    cout << "create_tree" << "\n";
+    cout << "add_son" << "\n";
+    cout << "delete_son" << "\n";
+    cout << "build_demo_tree" << "\n";
+    cout << "print_tree" << "\n";
+    cout << "exit" << "\n";
 }
 
 int main() {
@@ -183,7 +268,21 @@ int main() {
             }
             add_son_to_tree(tre);
         }
+        else if (operation == "delete_son") {
+            if(!tre) {
+                cout << "create tree at first!" << "\n";
+                continue;
+            }
+            delete_son_from_tree(tre);
+        }
+        else if (operation == "build_demo_tree") {
+            tre = build_demo_tree();
+        }
         else if (operation == "print_tree") {
+            if(!tre) {
+                cout << "create tree at first!" << "\n";
+                continue;
+            }
             print_tree_rekurs(tre, tre->root);
         }
         else if (operation == "exit") {
