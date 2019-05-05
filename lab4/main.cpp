@@ -236,6 +236,72 @@ Tree* build_demo_tree() {
 }
 
 
+
+
+
+
+
+
+// second part - BINARY TREE
+// here only root is saving all tree
+
+struct node
+{
+    int key;
+    node *left, *right;
+};
+
+
+node* newNode(int item)
+{
+    node *temp =  new node;
+    temp->key = item;
+    temp->left = temp->right = nullptr;
+    return temp;
+}
+
+
+void print_bin_tree(struct node *root, int depth)
+{
+    if (root != nullptr)
+    {
+        print_bin_tree(root->left, depth + 1);
+        for(int i = 0; i < depth; i++)
+            cout << " --";
+        cout << root->key << "\n";
+        print_bin_tree(root->right, depth + 1);
+    }
+}
+
+
+node* insert(node* node, int key)
+{
+
+    if (node == nullptr) return newNode(key);
+
+    if (key < node->key)
+        node->left  = insert(node->left, key);
+    else if (key > node->key)
+        node->right = insert(node->right, key);
+
+    return node;
+}
+
+node* build_bin_tree() {
+    node *root = nullptr;
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+
+    print_bin_tree(root, 1);
+    return root;
+}
+
+
 void cout_operations() {
     cout << endl;
     cout << "Select operation:" << "\n";
@@ -247,46 +313,81 @@ void cout_operations() {
     cout << "exit" << "\n";
 }
 
-int main() {
-    string operation;
-    Tree *tre;
-    while(true) {
-        cout_operations();
-        cin >> operation;
+void cout_bin_operations() {
+    cout << endl;
+    cout << "Select operation:" << "\n";
+    cout << "insert" << "\n";
+    cout << "build_demo_tree" << "\n";
+    cout << "print" << "\n";
+    cout << "exit" << "\n";
+}
 
-        if (operation == "create_tree") {
-            cout << "enter root data:" << "\n";
-            int data;
-            cin >> data;
-            tre = create_empty_tree();
-            add_root(tre, data);
-        }
-        else if (operation == "add_son") {
-            if(!tre) {
-                cout << "create tree at first!" << "\n";
-                continue;
+void cout_types_of_tree() {
+    cout << endl;
+    cout << "Select type of tree:" << "\n";
+    cout << "binary" << "\n";
+    cout << "common" << "\n";
+}
+
+int main() {
+    string operation, type;
+    Tree *tre;
+    node* root = nullptr;
+    cout_types_of_tree();
+    cin >> type;
+    while(true) {
+        if(type == "common") {
+            cout_operations();
+            cin >> operation;
+
+            if (operation == "create_tree") {
+                cout << "enter root data:" << "\n";
+                int data;
+                cin >> data;
+                tre = create_empty_tree();
+                add_root(tre, data);
+            } else if (operation == "add_son") {
+                if (!tre) {
+                    cout << "create tree at first!" << "\n";
+                    continue;
+                }
+                add_son_to_tree(tre);
+            } else if (operation == "delete_son") {
+                if (!tre) {
+                    cout << "create tree at first!" << "\n";
+                    continue;
+                }
+                delete_son_from_tree(tre);
+            } else if (operation == "build_demo_tree") {
+                tre = build_demo_tree();
+            } else if (operation == "print_tree") {
+                if (!tre) {
+                    cout << "create tree at first!" << "\n";
+                    continue;
+                }
+                print_tree_rekurs(tre, tre->root);
+            } else if (operation == "exit") {
+                return 0;
             }
-            add_son_to_tree(tre);
         }
-        else if (operation == "delete_son") {
-            if(!tre) {
-                cout << "create tree at first!" << "\n";
-                continue;
+        else if(type == "binary") {
+            int key;
+            cout_bin_operations();
+            cin >> operation;
+            if (operation == "insert") {
+                cout << "Enter data:" << "\n";
+                cin >> key;
+                if(!root)
+                    root = insert(root, key);
+                else
+                    insert(root, key);
+            } else if (operation == "build_demo_tree") {
+                root = build_bin_tree();
+            } else if (operation == "print") {
+                print_bin_tree(root, 1);
+            } else if (operation == "exit") {
+                return 0;
             }
-            delete_son_from_tree(tre);
-        }
-        else if (operation == "build_demo_tree") {
-            tre = build_demo_tree();
-        }
-        else if (operation == "print_tree") {
-            if(!tre) {
-                cout << "create tree at first!" << "\n";
-                continue;
-            }
-            print_tree_rekurs(tre, tre->root);
-        }
-        else if (operation == "exit") {
-            return 0;
         }
 
     }
