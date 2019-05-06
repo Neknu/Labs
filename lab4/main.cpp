@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <queue>
 
 using std::string;
 using std::cin;
@@ -249,6 +250,8 @@ struct node
 {
     int key;
     node *left, *right;
+
+    bool isThreaded;
 };
 
 
@@ -261,15 +264,15 @@ node* newNode(int item)
 }
 
 
-void print_bin_tree(struct node *root, int depth)
+void printBinTree(struct node *root, int depth)
 {
     if (root != nullptr)
     {
-        print_bin_tree(root->left, depth + 1);
+        printBinTree(root->left, depth + 1);
         for(int i = 0; i < depth; i++)
             cout << " --";
         cout << root->key << "\n";
-        print_bin_tree(root->right, depth + 1);
+        printBinTree(root->right, depth + 1);
     }
 }
 
@@ -287,6 +290,84 @@ node* insert(node* node, int key)
     return node;
 }
 
+
+void populateQueue(node *root, std::queue <node *> *q)
+{
+    if (root == nullptr) return;
+    if (root->left)
+        populateQueue(root->left, q);
+    q->push(root);
+    if (root->right)
+        populateQueue(root->right, q);
+}
+
+
+void createThreadedUtil(node *root, std::queue <node *> *q)
+{
+    if (root == nullptr) return;
+
+    if (root->left)
+        createThreadedUtil(root->left, q);
+    q->pop();
+
+    if (root->right)
+        createThreadedUtil(root->right, q);
+
+    else
+    {
+        root->right = q->front();
+        root->isThreaded = true;
+    }
+}
+
+//convert binary to threaded
+void createThreaded(node *root)
+{
+    std::queue <node *> q;
+
+
+    populateQueue(root, &q);
+
+
+    createThreadedUtil(root, &q);
+}
+
+// A utility function to find leftmost node in a binary
+// tree rooted with 'root'. This function is used in inOrder()
+node *leftMost(node *root, int &depth)
+{
+    while (root != nullptr && root->left != nullptr) {
+        root = root->left;
+        depth++;
+    }
+    return root;
+}
+
+// Function to do inorder traversal of a threadded binary tree
+void inOrder(node *root)
+{
+    if (root == nullptr) return;
+
+    int depth = 1;
+    node *cur = leftMost(root, depth);
+
+    while (cur != nullptr)
+    {
+
+        for(int i = 0; i < depth; i++)
+            cout << " --";
+        cout << cur->key << endl;
+
+        if (cur->isThreaded)
+            cur = cur->right;
+
+        else {
+            depth = 1;
+            cur = leftMost(cur->right, depth);
+        }
+    }
+}
+
 node* build_bin_tree() {
     node *root = nullptr;
     root = insert(root, 50);
@@ -297,7 +378,7 @@ node* build_bin_tree() {
     insert(root, 60);
     insert(root, 80);
 
-    print_bin_tree(root, 1);
+    printBinTree(root, 1);
     return root;
 }
 
@@ -384,7 +465,7 @@ int main() {
             } else if (operation == "build_demo_tree") {
                 root = build_bin_tree();
             } else if (operation == "print") {
-                print_bin_tree(root, 1);
+                printBinTree(root, 1);
             } else if (operation == "exit") {
                 return 0;
             }
