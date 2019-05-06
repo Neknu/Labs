@@ -1,12 +1,16 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include <stack>
+#include <cstring>
 
 using std::string;
 using std::cin;
 using std::cout;
 using std::endl;
 
+
+//block 0
 struct Node {
     Node* dad;
     Node* son;
@@ -33,6 +37,8 @@ struct Tree {
     }
 };
 
+
+//block 1 and 2
 Tree* create_empty_tree() {
     Tree* tre = new Tree;
     return tre;
@@ -163,6 +169,8 @@ Node* add_son_to_tree(Tree* tre) {
     return new_son;
 }
 
+//block 3
+
 void delete_son(Tree* tre, Node* to_del) {
     if(tre->length == 1) {
         delete to_del;
@@ -246,8 +254,9 @@ Tree* build_demo_tree() {
 // second part - BINARY TREE
 // here only root is saving all tree
 
-struct node
-{
+
+//block 4
+struct node {
     int key;
     node *left, *right;
 
@@ -255,8 +264,7 @@ struct node
 };
 
 
-node* newNode(int item)
-{
+node* newNode(int item) {
     node *temp =  new node;
     temp->key = item;
     temp->left = temp->right = nullptr;
@@ -264,8 +272,7 @@ node* newNode(int item)
 }
 
 
-void printBinTree(struct node *root, int depth)
-{
+void printBinTree(struct node *root, int depth) {
     if (root != nullptr)
     {
         printBinTree(root->left, depth + 1);
@@ -277,8 +284,7 @@ void printBinTree(struct node *root, int depth)
 }
 
 
-node* insert(node* node, int key)
-{
+node* insert(node* node, int key) {
 
     if (node == nullptr) return newNode(key);
 
@@ -291,8 +297,9 @@ node* insert(node* node, int key)
 }
 
 
-void populateQueue(node *root, std::queue <node *> *q)
-{
+//block 5
+
+void populateQueue(node *root, std::queue <node *> *q) {
     if (root == nullptr) return;
     if (root->left)
         populateQueue(root->left, q);
@@ -321,21 +328,14 @@ void createThreadedUtil(node *root, std::queue <node *> *q)
 }
 
 //convert binary to threaded
-void createThreaded(node *root)
-{
+void createThreaded(node *root) {
     std::queue <node *> q;
-
-
     populateQueue(root, &q);
-
-
     createThreadedUtil(root, &q);
 }
 
-// A utility function to find leftmost node in a binary
-// tree rooted with 'root'. This function is used in inOrder()
-node *leftMost(node *root, int &depth)
-{
+
+node *leftMost(node *root, int &depth) {
     while (root != nullptr && root->left != nullptr) {
         root = root->left;
         depth++;
@@ -343,9 +343,8 @@ node *leftMost(node *root, int &depth)
     return root;
 }
 
-// Function to do inorder traversal of a threadded binary tree
-void inOrder(node *root)
-{
+
+void inOrder(node *root) {
     if (root == nullptr) return;
 
     int depth = 1;
@@ -353,14 +352,12 @@ void inOrder(node *root)
 
     while (cur != nullptr)
     {
-
         for(int i = 0; i < depth; i++)
             cout << " --";
         cout << cur->key << endl;
 
         if (cur->isThreaded)
             cur = cur->right;
-
         else {
             depth = 1;
             cur = leftMost(cur->right, depth);
@@ -382,6 +379,82 @@ node* build_bin_tree() {
     return root;
 }
 
+
+//block 6
+
+
+// An expression tree node
+struct et
+{
+    char value;
+    et* left, *right;
+};
+
+
+bool isOperator(char c)
+{
+    if (c == '+' || c == '-' ||
+        c == '*' || c == '/' ||
+        c == '^')
+        return true;
+    return false;
+}
+
+
+void inorder(et *t)
+{
+    if(t)
+    {
+        inorder(t->left);
+        cout << t->value;
+        inorder(t->right);
+    }
+}
+
+
+et* new_node(int v)
+{
+    et *temp = new et;
+    temp->left = temp->right = NULL;
+    temp->value = v;
+    return temp;
+};
+
+
+et* constructTree(char postfix[])
+{
+    std::stack<et *> st;
+    et *t, *t1, *t2;
+
+    for (int i=0; i<strlen(postfix); i++)
+    {
+
+        if (!isOperator(postfix[i]))
+        {
+            t = new_node(postfix[i]);
+            st.push(t);
+        }
+        else
+        {
+            t = new_node(postfix[i]);
+
+            t1 = st.top();
+            st.pop();
+            t2 = st.top();
+            st.pop();
+
+            t->right = t1;
+            t->left = t2;
+
+            st.push(t);
+        }
+    }
+
+    t = st.top();
+    st.pop();
+
+    return t;
+}
 
 void cout_operations() {
     cout << endl;
