@@ -1,92 +1,98 @@
 #include <bits/stdc++.h>
 
-//Лабораторна робота 2b Снєговського Влада К18, задача номер 14
-
 using namespace std;
 
-struct List_str {
-    int prior;
-    char message[50];
-    List_str* next;
+void Binary_tree_of_search();
+struct Tree{
+    Tree* father;
+    Tree* l_son;
+    Tree* r_son;
+    int left_son;
+    int right_son;
+    int data;
 };
 
-void list_func();
-
-int main() {
-    list_func();
+int main(){
+    Binary_tree_of_search();
     return 0;
 }
 
-List_str* add_new_el(List_str* first, int &count_of_el){
-    List_str* new_el = new List_str;
-    List_str* help_el_next;
-    List_str* help_el_prev;
-    cout << "Enter message text:";
-    cin >> new_el->message;
-    cout << "Enter priority:";
-    cin >> new_el->prior;
-
-    int help_int = 0;
-    if (count_of_el == 0){
-        new_el->next = nullptr;
-        first = new_el;
-        count_of_el++;
-    }
-    else if (count_of_el == 1){
-        first->next = new_el;
-        new_el->next = nullptr;
-    }
-    else{
-        help_el_next = first;
-        help_el_prev = first;
-        while (help_el_next->prior <= new_el->prior){
-            help_el_next = help_el_next->next;
-            help_int++;
-            if (help_int >= 2)
-                help_el_prev = help_el_prev->next;
-            if (help_el_next->next == nullptr && help_el_next->prior <= new_el->prior){
-                help_int = -1;
-                break;
-            }
+void recurs_add(Tree* start_el, int in_data, Tree* add_son){
+    if (start_el->data <= in_data){
+        if (start_el->right_son == 1)
+            recurs_add(start_el->r_son, in_data, add_son);
+        else if (start_el->right_son != 1){
+            start_el->r_son = add_son;
+            add_son->father = start_el;
+            start_el->right_son = 1;
         }
-        if (help_int == -1){
-            help_el_next->next = new_el;
-            new_el->next = nullptr;
+    }
+    else if (start_el->data > in_data){
+        if (start_el->left_son == 1)
+            recurs_add(start_el->l_son, in_data, add_son);
+        else if (start_el->left_son != 1){
+            start_el->l_son = add_son;
+            add_son->father = start_el;
+            start_el->left_son = 1;
         }
+    }
+}
+void add_new_el(Tree* start_el, int data_1, int data_2){
+    Tree* new_el_1 = new Tree;
+    Tree* new_el_2 = new Tree;
+    new_el_1->data = data_1;
+    new_el_2->data = data_2;
+    if (data_2 >= data_1){
+        new_el_1->r_son = new_el_2;
+        new_el_1->right_son = 1;
+        new_el_2->father = new_el_1;
+    }
+    else if (data_2 < data_1){
+        new_el_1->l_son = new_el_2;
+        new_el_1->left_son = 1;
+        new_el_2->father = new_el_1;
+    }
+    if (data_1 < start_el->data){
+        if (start_el->left_son == 1)
+            recurs_add(start_el->l_son, data_1, new_el_1);
+        else if (start_el->left_son != 1){
+            start_el->left_son = 1;
+            start_el->l_son = new_el_1;
+            new_el_1->father = start_el;
+        }
+    }
+    else if (new_el_1->data >= start_el->data){
+        if (start_el->right_son == 1)
+            recurs_add(start_el->r_son, data_1, new_el_1);
         else {
-            help_el_prev->next = new_el;
-            new_el->next = help_el_next;
+            start_el->right_son = 1;
+            start_el->r_son = new_el_1;
+            new_el_1->father = start_el;
         }
     }
-    return first;
 }
-void write_list(List_str* first){
-    List_str* cout_str;
-    cout_str = first;
-    do {
-        cout << "priority:" << cout_str->prior << endl;
-        cout << "message:" << endl;
-        cout << cout_str->message << endl;
-        cout_str = cout_str->next;
-    }while (cout_str != nullptr);
+void cout_tree(Tree* start_el, int indent){
+    if (start_el->l_son != 0){
+        for (int i = 0; i < indent; i++)
+            cout << " ";
+        cout << "|l:" << start_el->l_son->data << endl;
+        if (start_el->l_son->l_son != 0 || start_el->l_son->r_son != 0)
+            cout_tree(start_el->l_son, indent+2);
+    }
+    if (start_el->r_son != 0){
+        for (int i = 0; i < indent; i++)
+            cout << " ";
+        cout << "|r:" << start_el->l_son->data << endl;
+        if (start_el->r_son->l_son != 0 || start_el->r_son->r_son != 0)
+            cout_tree(start_el->l_son, indent+2);
+    }
 }
-void list_func(){
-    List_str* first;
-    int way = 0, count_of_el = 0;
-    bool check_end = false;
-    do{
-        cout << "If you want to add new element to the list press 1:" << endl;
-        cout << "If you want to see the list press 2:" << endl;
-        cout << "If you want to exit press 9:" << endl;
-        cin >> way;
-        if (way == 1){
-            first = add_new_el(first, count_of_el);
-        }
-        else if (way == 2){
-            write_list(first);
-        }
-        else if (way == 9)
-            check_end = true;
-    }while (check_end == false);
-
+void Binary_tree_of_search(){
+    Tree* Boss = new Tree;
+    Boss->father = 0;
+    Boss->data = rand()%14+4;
+    for (int i = 0; i < 8; i++)
+        add_new_el(Boss, rand()%20+1, rand()%20+1);
+    cout << Boss->data << endl;
+    cout_tree(Boss, 2);
 }
