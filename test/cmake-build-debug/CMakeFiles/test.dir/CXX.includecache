@@ -7,6 +7,18 @@
 #IncludeRegexTransform: 
 
 D:/labsGit/Labs/test/main.cpp
-bits/stdc++.h
+iostream
+-
+string
+-
+cmath
+-
+random
+-
+chrono
+-
+functional
+-
+algorithm
 -
 
