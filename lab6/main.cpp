@@ -329,6 +329,27 @@ BinNode* find_element_bin_tree(BinTree* bin, string key) {
     return nullptr;
 }
 
+BinNode* find_element_dad_bin_tree(BinTree* bin, string key) {
+    BinNode* BinNode = bin->root;
+    while(BinNode) {
+        if(BinNode->left)
+            if(BinNode->left->data == key)
+                return BinNode;
+        if(BinNode->right)
+            if(BinNode->right->data == key)
+                return BinNode;
+        if(BinNode->data < key) {
+            BinNode = BinNode->right;
+        }
+        else {
+            if (BinNode->data > key) {
+                BinNode = BinNode->left;
+            }
+        }
+    }
+    return nullptr;
+}
+
 BinNode* find_element_diapason_bin_tree(BinTree* bin, string start, string end) {
     BinNode* BinNode = bin->root;
     while(BinNode) {
@@ -356,8 +377,14 @@ BinTree* delete_element_bin_tree(BinTree* bin, string data) {
     if(!to_del)
         return bin;
     else {
-        if(to_del->right == nullptr && to_del->left == nullptr)
+        if(to_del->right == nullptr && to_del->left == nullptr) {
+            BinNode* dad = find_element_dad_bin_tree(bin, data);
+            if(dad->left->data == data)
+                dad->left = nullptr;
+            else
+                dad->right = nullptr;
             delete to_del;
+        }
         else {
             if (to_del->right == nullptr) {
                 BinNode* temp = to_del->left;
@@ -378,6 +405,11 @@ BinTree* delete_element_bin_tree(BinTree* bin, string data) {
                         swap_delete_bin_node(bin, curr, temp);
                     }
                     else {
+                        BinNode* dad = find_element_dad_bin_tree(bin, curr->data);
+                        if(dad->left->data == data)
+                            dad->left = nullptr;
+                        else
+                            dad->right = nullptr;
                         delete curr;
                     }
                 }
