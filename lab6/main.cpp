@@ -195,14 +195,24 @@ ArrayList* add_element_array_list(ArrayList* arr, string data) {
     return arr;
 }
 
-int find_element_array_list(ArrayList* arr, string data) {
-    for(int i = 0; i < arr->length; i ++) {
-        if(arr->arr[i] > data)
-            return -1;
-        if (arr->arr[i] == data)
-            return i;
+int binarySearch(string arr[], int l, int r, string x)
+{
+    if (r >= l) {
+        int mid = l + (r - l) / 2;
+
+        if (arr[mid] == x)
+            return mid;
+
+        if (arr[mid] > x)
+            return binarySearch(arr, l, mid - 1, x);
+
+        return binarySearch(arr, mid + 1, r, x);
     }
     return -1;
+}
+
+int find_element_array_list(ArrayList* arr, string data) {
+     return binarySearch(arr->arr, 0, arr->length - 1, data);
 }
 
 int find_element_diapason_array_list(ArrayList* arr, string start, string end) {
@@ -464,23 +474,20 @@ int main() {
 
 
     //task 2
-//    ArrayList* arr = create_random_array_list(RAND);
-//    //ArrayList* arr = create_array_list();
-//    add_element_array_list(arr, "ABB");
-//    add_element_array_list(arr, "B");
-//    delete_element_array_list(arr, "B");
-//    print_array_list(arr);
+    ArrayList* arr = create_random_array_list(RAND);
+    //ArrayList* arr = create_array_list();
+    add_element_array_list(arr, "ABB");
+    add_element_array_list(arr, "B");
+    delete_element_array_list(arr, "B");
+    print_array_list(arr);
 
-    BinTree* bin = create_random_bin_tree(RAND);
-    add_element_bin_tree(bin, "D");
-    print_bin_tree(bin);
-    BinNode* curr = find_element_bin_tree(bin, "D");
-    if(curr)
-        cout << curr->data << "\n";
-    else
-        cout << "No element!" << "\n";
-    delete_element_bin_tree(bin, "D");
-    print_bin_tree(bin);
+
+//    BinTree* bin = create_random_bin_tree(RAND);
+//    add_element_bin_tree(bin, "D");
+//    print_bin_tree(bin);
+//    BinNode* curr = find_element_bin_tree(bin, "D");
+//    delete_element_bin_tree(bin, "D");
+//    print_bin_tree(bin);
 
     return 0;
 }
