@@ -1,184 +1,236 @@
 #include <iostream>
-#include <string>
-#include <cmath>
-#include <random>
-#include <chrono>
-#include <functional>
-#include <algorithm>
+#include <algorithm> // std::max
 
-int const V = 1;
-int const COUNT = 127;
-int const KOL = 40;
-int const INF = 1000000000;
-
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
-using std::min;
-
-double rand_num(double max) {
-    static std::random_device rd;
-    static std::seed_seq seed { rd(), static_cast<unsigned int>(time(nullptr))};
-    static std::mt19937_64 gen(seed);
-    std::uniform_real_distribution<double> dist(-max, max);
-
-    return dist(gen);
-}
-
-
-struct func {
-    string name;
-    int level;
+struct Node {
+  int data;
+  Node* left;
+  Node* right;
 };
 
-struct element {
-    string type;
-    int id;
-    int count_func;
-    func functions[5 + V];
-    double rr;
-    double mark;
+class Tree {
+public:
+  Tree() : root_(nullptr) { }
 
-    element* dad;
-    element* son;
-    element* next; //brother
+  // Getters
+  int GetHeight(Node* root);
+  int Diff(Node* root);
+
+  // Rotations
+  Node* RightRight_Rotation(Node* root);
+  Node* LeftLeft_Rotation(Node* root);
+  Node* LeftRight_Rotation(Node* root);
+  Node* RightLeft_Rotation(Node* root);
+
+  // Core
+  Node* Balance(Node* root);
+  Node* Insert(Node* root, int value);
+  void Display(Node* root, int level);
+
+  // Searches
+  void Inorder(Node* root);
+  void Preorder(Node* root);
+  void Postorder(Node* root);
+
+  Node* root() { return this->root_; }
+
+private:
+ Node* root_;
 };
 
-//task one
 
-struct dstnc {
-    double distance; //distnce between 2 components
-    double first_mark;
-    double second_mark;
-    dstnc* left;
-    dstnc* right;
-};
+int Tree::GetHeight(Node *temp) {
+  int h = 0;
+  if (temp) {
+    int l_GetHeight = GetHeight(temp->left);
+    int r_GetHeight = GetHeight(temp->right);
+    int max_GetHeight = std::max(l_GetHeight, r_GetHeight);
+    h = max_GetHeight + 1;
+  }
 
-dstnc* newNode(double item) {
-    dstnc *temp =  new dstnc;
-    temp->distance = item;
-    temp->left = temp->right = nullptr;
-    return temp;
+  return h;
 }
 
-double mark(element* el) {
-    double res = 0;
-    for(int i = 0; i < el->count_func; i++) {
-        res += el->functions[i].level*el->functions[i].level;
+int Tree::Diff(Node* temp) {
+  int l_GetHeight = GetHeight(temp->left);
+  int r_GetHeight = GetHeight(temp->right);
+  int b_factor = (l_GetHeight - r_GetHeight);
+  return b_factor;
+}
+
+Node* Tree::RightRight_Rotation(Node* parent) {
+  Node* temp;
+  temp = parent->right;
+  parent->right = temp->left;
+  temp->left = parent;
+  return temp;
+}
+
+Node* Tree::LeftLeft_Rotation(Node* parent) {
+  Node* temp;
+  temp = parent->left;
+  parent->left = temp->right;
+  temp->right = parent;
+  return temp;
+}
+
+Node* Tree::LeftRight_Rotation(Node* parent) {
+  Node* temp = parent->left;
+  parent->left = RightRight_Rotation(temp);
+  return LeftLeft_Rotation(parent);
+}
+
+Node* Tree::RightLeft_Rotation(Node* parent) {
+  Node* temp = parent->right;
+  parent->right = LeftLeft_Rotation(temp);
+  return RightRight_Rotation(parent);
+}
+
+Node* Tree::Balance(Node* temp) {
+  int balanceFactor = Diff(temp);
+
+  if (balanceFactor > 1) {
+    if (Diff (temp->left) > 0) {
+      temp = LeftLeft_Rotation(temp);
+    } else {
+      temp = LeftRight_Rotation(temp);
     }
-    res = pow(res, V + 2*el->rr);
-    return res;
-}
-
-
-double dist(element* el, element* other) {
-    double res = 0;
-    for(int i = 0; i < el->count_func; i++)
-        for(int j = 0; j < other->count_func; j++)
-            if(el->functions[i].name == other->functions[j].name) {
-                res += pow(min(el->functions[i].level, other->functions[j].level), 2);
-            }
-    res += 1;
-    res = pow(res, min(el->rr, other->rr) - 2*V);
-    return res;
-}
-
-int create_distances(element* components[], struct dstnc* distances[], int count) {
-    int k = 0;
-    for(int i = 0; i < count; i++)
-        for(int j = i + 1; j < count; j++) {
-            dstnc* d = new dstnc;
-            d->distance = dist(components[i], components[j]);
-            d->first_mark = components[i]->mark;
-            d->second_mark = components[j]->mark;
-            distances[k] = d;
-            k++;
-        }
-    return k;
-}
-
-element* create_random_element() {
-    element* el = new element;
-    el->type = char(75+int(rand_num(10)));
-    el->id = int(rand_num(10)) + 10;
-    el->count_func = abs(int(rand_num(5+V)));
-    for(int i = 0; i < el->count_func; i++) {
-        el->functions[i].name =char(75+int(rand_num(5)));
-        el->functions[i].level = abs(int(rand_num(1000))) + 1;
+  } else if (balanceFactor < -1) {
+    if (Diff(temp->right) > 0) {
+      temp = RightLeft_Rotation(temp);
+    } else {
+      temp = RightRight_Rotation(temp);
     }
-    el->rr = abs(rand_num(1));
-    el->mark = mark(el);
-    return el;
+  }
+
+  return temp;
 }
 
-
-void printBinTree(struct dstnc *root, int depth) {
-    if (root != nullptr)
-    {
-        printBinTree(root->left, depth + 1);
-        for(int i = 0; i < depth; i++)
-            cout << " --";
-        cout << root->distance << "\n";
-        printBinTree(root->right, depth + 1);
-    }
-}
-
-
-dstnc* insert(dstnc* dstnc, double key) {
-
-    if (dstnc == nullptr) return newNode(key);
-
-    if (key < dstnc->distance)
-        dstnc->left  = insert(dstnc->left, key);
-    else if (key > dstnc->distance)
-        dstnc->right = insert(dstnc->right, key);
-
-    return dstnc;
-}
-
-dstnc* find(dstnc* dstnc, double key) {
-    while(dstnc) {
-        if(dstnc->distance == key)
-            return dstnc;
-        if(dstnc->distance > key)
-            dstnc = dstnc->right;
-        else
-        if(dstnc->distance < key)
-            dstnc = dstnc->left;
-    }
-    return nullptr;
-}
-
-
-dstnc* build_bin_tree(dstnc* distances[], int count_dist) {
-    dstnc *root = nullptr;
-    root = insert(root, distances[0]->distance);
-    for(int i = 0; i < count_dist; i++)
-        insert(root, distances[i]->distance);
-    printBinTree(root, 1);
+Node* Tree::Insert(Node* root, int value) {
+  if (!root) {
+    root = new Node;
+    root->data = value;
+    root->left = nullptr;
+    root->right = nullptr;
     return root;
+  } else if (value < root->data) {
+    root->left = Insert(root->left, value);
+    root = Balance(root);
+  } else if (value >= root->data) {
+    root->right = Insert(root->right, value);
+    root = Balance(root);
+  }
+
+  return root;
 }
 
-int main() {
-    element* components[COUNT + 1];
+void Tree::Display(Node* current, int level) {
+  if (!current) return;
 
-
-
-    //task 4
-
-    dstnc* distances[KOL*KOL + 1];
-    for(int i = 0; i < KOL/4; i++) {
-       components[i] = create_random_element();
+  Display(current->right, level + 1);
+  std::cout << std::endl;
+  if (current == root()) {
+    std::cout<<"Root -> ";
+    for (int i = 0; i < level && current != root(); ++i) {
+      std::cout << "           ";
     }
-    int count_dist = create_distances(components, distances, KOL/4);
-    dstnc* root = build_bin_tree(distances, count_dist);
+    std::cout << current->data;
+    Display(current->left, level+1);
+  }
+}
 
-    dstnc* find_dist = find(root, distances[4]->distance);
-    if(find_dist)
-        cout << "this is data from finded node - " << find_dist->distance << "\n";
-    else
-       cout << "this node doesn't exist!" << "\n";
+// Left - Node - Right
+void Tree::Inorder(Node* root) {
+  if (!root) return;
 
-    return 0;
+  Inorder(root->left);
+  std::cout << root->data<< "      ";
+  Inorder(root->right);
+}
+
+// Node - Left - Right
+void Tree::Preorder(Node* root) {
+  if (!root) return;
+
+  std::cout << root->data << "  ";
+  Preorder(root->left);
+  Preorder(root->right);
+}
+
+// Left - Right - Node
+void Tree::Postorder(Node* root) {
+  if (!root) return;
+
+  Postorder(root->left);
+  Postorder(root->right);
+  std::cout<<root->data<<"  ";
+}
+
+ // Prompt for user input; and preferred traversal
+ int main() {
+
+  int choice = 0;
+  int item = 0;
+  Tree avl;
+
+  while (true) {
+
+    // Prompt for user input
+    cout << "Enter your choice: " << std::endl;
+    cout << "1: create empty list" << std::endl;
+    std::cout << "2: add element to list" << std::endl;
+    std::cout << "3: delete element from list" << std::endl;
+    std::cout << "4: find element by value" << std::endl;
+    std::cout << "5: find element by diapason" << std::endl;\
+    std
+
+      std::cout << "5: find element by diapason" << std::endl;
+      std::cout << "5: find element by diapason" << std::endl;
+    std::cout << "6: Exit" << std::endl;
+
+    // Save integer choice
+    std::cin >> choice;
+
+    switch(choice) {
+      case 1:
+      std::cout << "Enter value to be Inserted: ";
+      std::cin >> item;
+      avl.Insert(avl.root(), item);
+      break;
+      case 2:
+      if (!avl.root()) {
+        std::cout << "Tree is empty!" << std::endl;
+        continue;
+      }
+      std::cout << "Balanced AVL Tree:" <<std::endl;
+      avl.Display(avl.root(), 1);
+      break;
+
+      case 3:
+      std::cout << "Inorder:" << std::endl;
+      avl.Inorder(avl.root());
+      std::cout << std::endl;
+      break;
+
+      case 4:
+      std::cout << "Preorder: " << std::endl;
+      avl.Preorder(avl.root());
+      std::cout << std::endl;
+      break;
+
+      case 5:
+      std::cout << "Postorder: " << std::endl;
+      avl.Inorder(avl.root());
+      std::cout << std::endl;
+      break;
+
+      case 6:
+      exit(1);
+      break;
+
+      default:
+      std::cout << "Wrong choice, please try again." << std::endl;
+    }
+  }
+
+  return 0;
 }
