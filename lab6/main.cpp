@@ -300,6 +300,43 @@ ArrayList* create_random_array_list(int count) {
     return arr;
 }
 
+void demo_array_list(int count) {
+    ArrayList* arr = create_random_array_list(count);
+    cout << "created random arr" << endl;
+    print_array_list(arr);
+    cout << "deleted 1/4 elements" << endl;
+    for(int i = 0; i < arr->length / 4; i ++)
+        delete_element_array_list(arr, arr->arr[i]);
+
+    print_array_list(arr);
+}
+
+void benchmark_array_list() {
+    int N = 6;
+    using namespace std::chrono;
+    duration<double> time_span;
+    float t;
+    do {
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+        ArrayList* arr = create_random_array_list(N);
+
+        for(int i = 0; i < N / 2; i ++)
+            delete_element_array_list(arr, arr->arr[i]);
+
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+        time_span = duration_cast<duration<double>>(t2 - t1);
+        t = time_span.count();
+        N = N * 2;
+    }
+
+    while(t < 5);
+    cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+    cout << "N = " << N << "\n";
+}
+
+
 // task 3
 
 struct BinNode{
@@ -340,8 +377,6 @@ BinNode* add_element_bin(BinNode* BinNode, string key) {
         BinNode->left  = add_element_bin(BinNode->left, key);
     else if (key > BinNode->data)
         BinNode->right = add_element_bin(BinNode->right, key);
-    else if (key == BinNode->data)
-        return nullptr;
 
     return BinNode;
 }
@@ -494,36 +529,48 @@ void print_bin_tree(BinTree* bin) {
     print_bin(bin->root, 1);
 }
 
+
+void demo_bin_tree(int count) {
+    BinTree* bin = create_random_bin_tree(count);
+    cout << "created random bin" << endl;
+    print_bin_tree(bin);
+    cout << "deleted 1/4 elements" << endl;
+    for(int i = 0; i < bin->count_of_elements / 4; i ++)
+        delete_element_bin_tree(bin, bin->root->data);
+
+    print_bin_tree(bin);
+}
+
+void benchmark_bin_tree() {
+    int N = 6;
+    using namespace std::chrono;
+    duration<double> time_span;
+    float t;
+    do {
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+        BinTree* bin = create_random_bin_tree(N);
+
+        for(int i = 0; i < N / 2; i ++)
+            delete_element_bin_tree(bin, bin->root->data);
+
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+        time_span = duration_cast<duration<double>>(t2 - t1);
+        t = time_span.count();
+        N = N * 2;
+    }
+
+    while(t < 5);
+    cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+    cout << "N = " << N << "\n";
+}
+
+
 //task 4
 
 
 int main() {
-
-    //task 1
-//    LinkedList* list = create_random_linked_list(RAND);
-//    //LinkedList* list = create_linked_list();
-//    add_element_linked_list(list, "ABB");
-//    add_element_linked_list(list, "B");
-//    delete_element_linked_list(list, "B");
-//    print_linked_list(list);
-
-
-    //task 2
-//    ArrayList* arr = create_random_array_list(RAND);
-//    //ArrayList* arr = create_array_list();
-//    add_element_array_list(arr, "ABB");
-//    add_element_array_list(arr, "B");
-//    delete_element_array_list(arr, "B");
-//    print_array_list(arr);
-
-
-//    BinTree* bin = create_random_bin_tree(RAND);
-//    add_element_bin_tree(bin, "D");
-//    print_bin_tree(bin);
-//    BinNode* curr = find_element_bin_tree(bin, "D");
-//    delete_element_bin_tree(bin, "D");
-//    print_bin_tree(bin);
-
 
     bool created = false;
 
@@ -533,11 +580,12 @@ int main() {
 
     string data;
     string second;
-    Node* finded;
+    Node* finded_linked;
+    int finded_array;
+    BinNode* finded_bin;
     int count;
 
     int choice = 0;
-    int item = 0;
     int type = 0;
 
     cout << "Enter your type: " << endl;
@@ -576,7 +624,7 @@ int main() {
                         break;
                     case 2:
                         if(!created) {
-                            cout << "create linked list at first!" << endl;
+                            cout << "create array list at first!" << endl;
                             break;
                         }
                         cout << "enter data to add" << endl;
@@ -586,7 +634,7 @@ int main() {
 
                     case 3:
                         if(!created) {
-                            cout << "create linked list at first!" << endl;
+                            cout << "create array list at first!" << endl;
                             break;
                         }
                         cout << "enter data to delete" << endl;
@@ -596,37 +644,37 @@ int main() {
 
                     case 4:
                         if(!created) {
-                            cout << "create linked list at first!" << endl;
+                            cout << "create array list at first!" << endl;
                             break;
                         }
                         cout << "enter data to find" << endl;
                         cin >> data;
-                        finded = find_element_linked_list(list, data);
-                        if(!finded)
+                        finded_linked = find_element_linked_list(list, data);
+                        if(!finded_linked)
                             cout << "No such an element in the tree!" << endl;
                         else
-                            cout << "This is data from finded element: " << finded->data << endl;
+                            cout << "This is data from finded element: " << finded_linked->data << endl;
                         break;
 
                     case 5:
                         if(!created) {
-                            cout << "create linked list at first!" << endl;
+                            cout << "create array list at first!" << endl;
                             break;
                         }
                         cout << "enter diapason start to find" << endl;
                         cin >> data;
                         cout << "enter diapason end to find" << endl;
                         cin >> second;
-                        finded = find_element_diapason_linked_list(list, data, second);
-                        if(!finded)
+                        finded_linked = find_element_diapason_linked_list(list, data, second);
+                        if(!finded_linked)
                             cout << "No such an element in the tree!" << endl;
                         else
-                            cout << "This is data from finded element: " << finded->data << endl;
+                            cout << "This is data from finded element: " << finded_linked->data << endl;
                         break;
 
                     case 6:
                         if(!created) {
-                            cout << "create linked list at first!" << endl;
+                            cout << "create array list at first!" << endl;
                             break;
                         }
                         cout << "Linked List:" << endl;
@@ -659,11 +707,190 @@ int main() {
                         std::cout << "Wrong choice, please try again." << std::endl;
                 }
                 break;
-            case 2:
 
+            case 2:
+                switch(choice) {
+                    case 1:
+                        arr = create_array_list();
+                        created = true;
+                        break;
+                    case 2:
+                        if(!created) {
+                            cout << "create array arr at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to add" << endl;
+                        cin >> data;
+                        add_element_array_list(arr, data);
+                        break;
+
+                    case 3:
+                        if(!created) {
+                            cout << "create array arr at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to delete" << endl;
+                        cin >> data;
+                        delete_element_array_list(arr, data);
+                        break;
+
+                    case 4:
+                        if(!created) {
+                            cout << "create array arr at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to find" << endl;
+                        cin >> data;
+                        finded_array = find_element_array_list(arr, data);
+                        if(!finded_array)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << arr->arr[finded_array] << endl;
+                        break;
+
+                    case 5:
+                        if(!created) {
+                            cout << "create array arr at first!" << endl;
+                            break;
+                        }
+                        cout << "enter diapason start to find" << endl;
+                        cin >> data;
+                        cout << "enter diapason end to find" << endl;
+                        cin >> second;
+                        finded_array = find_element_diapason_array_list(arr, data, second);
+                        if(!finded_array)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << arr->arr[finded_array] << endl;
+                        break;
+
+                    case 6:
+                        if(!created) {
+                            cout << "create array arr at first!" << endl;
+                            break;
+                        }
+                        cout << "Array2 List:" << endl;
+                        print_array_list(arr);
+                        break;
+
+                    case 7:
+                        cout << "enter number of random elements: " << endl;
+                        cin >> count;
+                        arr = create_random_array_list(count);
+                        created = true;
+                        break;
+
+                    case 8:
+                        cout << "enter count of elements" << endl;
+                        cin >> count;
+                        demo_array_list(count);
+                        break;
+
+                    case 9:
+                        cout << "in process.." << endl;
+                        benchmark_array_list();
+                        break;
+
+                    case 10:
+                        exit(2);
+                        break;
+
+                    default:
+                        std::cout << "Wrong choice, please try again." << std::endl;
+                }
+                break;
 
             case 3:
+                switch(choice) {
+                    case 1:
+                        bin = create_bin_tree();
+                        created = true;
+                        break;
+                    case 2:
+                        if(!created) {
+                            cout << "create array bin at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to add" << endl;
+                        cin >> data;
+                        add_element_bin_tree(bin, data);
+                        break;
 
+                    case 3:
+                        if(!created) {
+                            cout << "create array bin at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to delete" << endl;
+                        cin >> data;
+                        delete_element_bin_tree(bin, data);
+                        break;
+
+                    case 4:
+                        if(!created) {
+                            cout << "create array bin at first!" << endl;
+                            break;
+                        }
+                        cout << "enter data to find" << endl;
+                        cin >> data;
+                        finded_bin = find_element_bin_tree(bin, data);
+                        if(!finded_bin)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_bin->data << endl;
+                        break;
+
+                    case 5:
+                        if(!created) {
+                            cout << "create array bin at first!" << endl;
+                            break;
+                        }
+                        cout << "enter diapason start to find" << endl;
+                        cin >> data;
+                        cout << "enter diapason end to find" << endl;
+                        cin >> second;
+                        finded_bin = find_element_diapason_bin_tree(bin, data, second);
+                        if(!finded_bin)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_bin->data << endl;
+                        break;
+
+                    case 6:
+                        if(!created) {
+                            cout << "create array bin at first!" << endl;
+                            break;
+                        }
+                        cout << "Bin Tree:" << endl;
+                        print_bin_tree(bin);
+                        break;
+
+                    case 7:
+                        cout << "enter number of random elements: " << endl;
+                        cin >> count;
+                        bin = create_random_bin_tree(count);
+                        created = true;
+                        break;
+
+                    case 8:
+                        cout << "enter count of elements" << endl;
+                        cin >> count;
+                        demo_bin_tree(count);
+                        break;
+
+                    case 9:
+                        cout << "in process.." << endl;
+                        benchmark_bin_tree();
+                        break;
+
+                    case 10:
+                        exit(3);
+                        break;
+
+                    default:
+                        std::cout << "Wrong choice, please try again." << std::endl;
+                }
+                break;
 
             case 4:
 
@@ -672,8 +899,7 @@ int main() {
 
 
             case 6:
-                exit(1);
-                break;
+
 
             default:
                 std::cout << "Wrong choice, please try again." << std::endl;
