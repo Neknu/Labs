@@ -5,6 +5,7 @@
 #include <chrono>
 #include <functional>
 #include <algorithm>
+#include <iomanip>
 
 
 using std::string;
@@ -570,6 +571,211 @@ void benchmark_bin_tree() {
 //task 4
 
 
+struct AVLNode {
+        string data;
+        AVLNode* left;
+        AVLNode* right;
+
+        ~AVLNode() {
+            delete left;
+            delete right;
+        }
+};
+
+class Tree {
+public:
+    Tree() :
+            root(nullptr)
+    { }
+
+    ~Tree() {
+        delete root;
+    }
+
+    AVLNode* find_diapason(string start, string end);
+    AVLNode* find(string key);
+    void create(int count);
+    void display();
+    void insert(string value);
+    bool empty();
+
+private:
+    // Helpers
+    static int GetHeight(AVLNode* root);
+    static int Diff(AVLNode* root);
+
+    // Rotations
+    static AVLNode* RightRight_Rotation(AVLNode* root);
+    static AVLNode* LeftLeft_Rotation(AVLNode* root);
+    static AVLNode* LeftRight_Rotation(AVLNode* root);
+    static AVLNode* RightLeft_Rotation(AVLNode* root);
+
+    // Core
+    static AVLNode* BalanceImpl(AVLNode* root);
+    static AVLNode* InsertImpl(AVLNode* root, string value);
+    static void DisplayImpl(AVLNode* root, int level);
+
+private:
+    AVLNode* root;
+};
+
+
+int Tree::GetHeight(AVLNode* temp) {
+    int h = 0;
+    if (temp) {
+        int l_GetHeight = GetHeight(temp->left);
+        int r_GetHeight = GetHeight(temp->right);
+        int max_GetHeight = std::max(l_GetHeight, r_GetHeight);
+        h = max_GetHeight + 1;
+    }
+
+    return h;
+}
+
+int Tree::Diff(AVLNode* temp) {
+    int l_GetHeight = GetHeight(temp->left);
+    int r_GetHeight = GetHeight(temp->right);
+    int b_factor = (l_GetHeight - r_GetHeight);
+    return b_factor;
+}
+
+AVLNode* Tree::RightRight_Rotation(AVLNode* parent) {
+    AVLNode* temp;
+    temp = parent->right;
+    parent->right = temp->left;
+    temp->left = parent;
+    return temp;
+}
+
+AVLNode* Tree::LeftLeft_Rotation(AVLNode* parent) {
+    AVLNode* temp;
+    temp = parent->left;
+    parent->left = temp->right;
+    temp->right = parent;
+    return temp;
+}
+
+AVLNode* Tree::LeftRight_Rotation(AVLNode* parent) {
+    AVLNode* temp = parent->left;
+    parent->left = RightRight_Rotation(temp);
+    return LeftLeft_Rotation(parent);
+}
+
+AVLNode* Tree::RightLeft_Rotation(AVLNode* parent) {
+    AVLNode* temp = parent->right;
+    parent->right = LeftLeft_Rotation(temp);
+    return RightRight_Rotation(parent);
+}
+
+AVLNode* Tree::BalanceImpl(AVLNode* temp) {
+    int balanceFactor = Diff(temp);
+
+    if (balanceFactor > 1) {
+        if (Diff (temp->left) > 0) {
+            temp = LeftLeft_Rotation(temp);
+        } else {
+            temp = LeftRight_Rotation(temp);
+        }
+    } else if (balanceFactor < -1) {
+        if (Diff(temp->right) > 0) {
+            temp = RightLeft_Rotation(temp);
+        } else {
+            temp = RightRight_Rotation(temp);
+        }
+    }
+
+    return temp;
+}
+
+AVLNode* Tree::InsertImpl(AVLNode* root, string value) {
+    if (!root) {
+        root = new AVLNode{value, nullptr, nullptr};
+        return root;
+    } else if (value < root->data) {
+        root->left = InsertImpl(root->left, value);
+        root = BalanceImpl(root);
+    } else if (value >= root->data) {
+        root->right = InsertImpl(root->right, value);
+        root = BalanceImpl(root);
+    }
+
+    return root;
+}
+
+AVLNode* Tree::find(string key) {
+    AVLNode* root_ =  root;
+    while(root_) {
+        if(root_->data == key) {
+            return root_;
+        }
+        if(root_->data < key) {
+            root_ = root_->right;
+        }
+        else {
+            if (root_->data > key) {
+                root_ = root_->left;
+            }
+        }
+    }
+    return nullptr;
+}
+
+
+AVLNode* Tree::find_diapason(string start, string end) {
+    AVLNode* root_ = root;
+    while(root_) {
+        if(start <= root_->data && root->data <= end) {
+            return root_;
+        }
+        if(root_->data < end) {
+            root_ = root_->right;
+        }
+        else {
+            if (root_->data > start) {
+                root_ = root_->left;
+            }
+        }
+    }
+    return nullptr;
+}
+
+
+void Tree::DisplayImpl(AVLNode* current, int level = 2) {
+    if (!current)
+        return;
+
+    DisplayImpl(current->left, level + 2);
+    std::cout << std::setw(level) << std::setfill('-') << current->data << std::endl;
+    DisplayImpl(current->right, level + 2);
+}
+
+void Tree::display() {
+    DisplayImpl(root);
+}
+
+void Tree::insert(string value) {
+    root = InsertImpl(root, value);
+}
+
+bool Tree::empty() {
+    return root == nullptr;
+}
+
+
+void Tree::create(int count) {
+
+    string word;
+    for(int i = 0; i < count; i++) {
+        int rand = rand_num(RAND) + 1;
+        word = "";
+        for(int j = 0; j < rand; j++)
+            word += char(65 + rand_num(rand) + 1);
+        insert(word);
+    }
+}
+
+
+
 int main() {
 
     bool created = false;
@@ -577,6 +783,8 @@ int main() {
     LinkedList* list;
     ArrayList* arr;
     BinTree* bin;
+    Tree avl;
+    AVLNode* finded_avl;
 
     string data;
     string second;
@@ -769,7 +977,7 @@ int main() {
                             cout << "create array arr at first!" << endl;
                             break;
                         }
-                        cout << "Array2 List:" << endl;
+                        cout << "Array List:" << endl;
                         print_array_list(arr);
                         break;
 
@@ -893,7 +1101,72 @@ int main() {
                 break;
 
             case 4:
+                switch(choice) {
+                    case 1: {
+                        created = true;
+                    }
+                    case 2: {
+                        std::cout << "Enter value to be added: ";
+                        std::cin >> data;
+                        avl.insert(data);
+                        break;
+                    }
 
+                    case 3: {
+                        cout << "here no delete!" << endl;
+                        break;
+                    }
+                    case 4: {
+                        std::cout << "Enter value to be finded: ";
+                        std::cin >> data;
+                        finded_avl = avl.find(data);
+                        if(!finded_avl)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_avl->data << endl;
+                        break;
+                    }
+
+                    case 5: {
+                        cout << "enter diapason start to find" << endl;
+                        cin >> data;
+                        cout << "enter diapason end to find" << endl;
+                        cin >> second;
+                        finded_avl = avl.find_diapason(data, second);
+                        if(!finded_avl)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_avl->data << endl;
+                        break;
+                    }
+
+                    case 6: {
+                        if (avl.empty()) {
+                            std::cout << "Tree is empty!" << std::endl;
+                        } else {
+                            std::cout << "Balanced AVL Tree:" << std::endl;
+                            avl.display();
+                            std::cout << std::endl;
+                        }
+                        break;
+                    }
+
+                    case 7:
+                        cout << "enter number of random elements: " << endl;
+                        cin >> count;
+                        avl.create(count);
+                        created = true;
+                        break;
+
+                    case 10: {
+                        exit(0);
+                        break;
+                    }
+
+                    default:
+                        std::cout << "Wrong choice, please try again." << std::endl;
+                }
+                break;
 
             case 5:
 
