@@ -595,6 +595,8 @@ public:
     AVLNode* find_diapason(string start, string end);
     AVLNode* find(string key);
     void create(int count);
+    void demo(int count);
+    void benchmark();
     void display();
     void insert(string value);
     bool empty();
@@ -763,7 +765,6 @@ bool Tree::empty() {
 
 
 void Tree::create(int count) {
-
     string word;
     for(int i = 0; i < count; i++) {
         int rand = rand_num(RAND) + 1;
@@ -773,6 +774,355 @@ void Tree::create(int count) {
         insert(word);
     }
 }
+
+void Tree::demo(int count) {
+    create(count);
+    cout << "created random avl tree" << endl;
+    display();
+    cout << "finded 1/4 elements" << endl;
+    for(int i = 0; i < count / 4; i++)
+        find(root->data);
+    display();
+}
+
+void Tree::benchmark() {
+    int N = 6;
+    using namespace std::chrono;
+    duration<double> time_span;
+    float t;
+    do {
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+        create(N);
+
+        for(int i = 0; i < N / 4; i++)
+            find(root->data);
+
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+        time_span = duration_cast<duration<double>>(t2 - t1);
+        t = time_span.count();
+        N = N * 2;
+    }
+
+    while(t < 5);
+    cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+    cout << "N = " << N << "\n";
+}
+
+//task 5
+
+
+class TwoThreeNode {
+private:
+
+    string getSmallest() {
+        TwoThreeNode *node = this;
+        while (!node->isLeaf()) node = node->child[0];
+        return node->key[0];
+    }
+
+
+    void insert1Siblings(TwoThreeNode *newChild, string newSmallest) {
+        string newKey = newChild->key[0];
+        newChild->parent = this;
+
+        if (newKey < child[0]->key[0]) {
+
+            child[1] = child[0];
+            child[0] = newChild;
+            key[0] = child[1]->getSmallest();
+        }
+        else {
+
+            child[1] = newChild;
+            key[0] = newSmallest;
+        }
+    }
+
+
+    void insert2Siblings(TwoThreeNode *newChild, string newSmallest) {
+        string newKey = newChild->key[0];
+        newChild->parent = this;
+
+        if (newKey < child[0]->key[0]) {
+            child[2] = child[1];
+            child[1] = child[0];
+            child[0] = newChild;
+
+            key[1] = key[0];
+            key[0] = child[1]->getSmallest();
+            updateParentSmallest(newSmallest);
+        }
+        else if (newKey < child[1]->key[0]) {
+            child[2] = child[1];
+            child[1] = newChild;
+
+            key[1] = key[0];
+            key[0] = newSmallest;
+        }
+        else {
+            child[2] = newChild;
+
+            key[1] = newSmallest;
+        }
+    }
+
+    void insert3Siblings(TwoThreeNode *newChild, string newSmallest) {
+        string newKey = newChild->key[0];
+
+        string splitSmallest = "";
+        TwoThreeNode *splitNode = new TwoThreeNode();
+        splitNode->parent = parent;
+
+        if (newKey < child[0]->key[0] || newKey < child[1]->key[0]) {
+
+            splitSmallest = key[0];
+            splitNode->child[0] = child[1];
+            splitNode->child[1] = child[2];
+            splitNode->key[0] = key[1];
+
+            child[1]->parent = splitNode;
+            child[2]->parent = splitNode;
+            newChild->parent = this;
+
+            if (newKey < child[0]->key[0]) {
+
+                child[1] = child[0];
+                child[0] = newChild;
+
+                key[0] = child[1]->getSmallest();
+                updateParentSmallest(newSmallest);
+            }
+            else {
+
+                child[1] = newChild;
+
+                key[0] = newSmallest;
+            }
+        }
+        else {
+
+            child[2]->parent = splitNode;
+            newChild->parent = splitNode;
+
+            if (newKey < child[2]->key[0]) {
+
+                splitSmallest = newSmallest;
+                splitNode->child[0] = newChild;
+                splitNode->child[1] = child[2];
+                splitNode->key[0] = key[1];
+            }
+            else {
+
+                splitSmallest = key[1];
+                splitNode->child[0] = child[2];
+                splitNode->child[1] = newChild;
+                splitNode->key[0] = newSmallest;
+            }
+        }
+
+        child[2] = NULL;
+        key[1] = -1;
+
+        if (parent->parent == NULL) {
+
+            TwoThreeNode *newNode = new TwoThreeNode();
+
+            parent->child[0] = newNode;
+            newNode->parent = parent;
+            newNode->child[0] = this;
+            parent = newNode;
+        }
+
+        parent->insert(splitNode, splitSmallest);
+    }
+
+
+    void updateParentSmallest(string data) {
+        switch (sibNumber()) {
+            case 0: if (parent->parent != NULL) parent->updateParentSmallest(data); break;
+            case 1: parent->key[0] = data; break;
+            case 2: parent->key[1] = data; break;
+        }
+    }
+
+public:
+    string key[2];
+    TwoThreeNode *parent, *child[3];
+
+
+    TwoThreeNode(string data = "") {
+        key[0] = data;
+        key[1] = "";
+        parent = child[0] = child[1] = child[2] = NULL;
+    }
+
+    bool isLeaf() {
+        return (child[0] == NULL);
+    }
+
+
+    int sibNumber() {
+        for (int i = 0; i < 3; ++i) {
+            if (this == parent->child[i]) return i;
+        }
+        return -1;
+    }
+
+
+    void insert(TwoThreeNode *newChild, string newSmallest) {
+        if (child[1] == NULL) insert1Siblings(newChild, newSmallest);
+        else if (child[2] == NULL) insert2Siblings(newChild, newSmallest);
+        else insert3Siblings(newChild, newSmallest);
+    }
+};
+
+
+class TwoThreeTree {
+private:
+
+    void print(TwoThreeNode *node, int tabs = 0) {
+        for (int i = 0; i < tabs; ++i) {
+            cout << "\t";
+        }
+
+        if (node == NULL) {
+            cout << "`--> NULL" << endl;
+            return;
+        }
+
+        cout << "`--> " << node->sibNumber()
+             << ": ( " << node->key[0] << ", " << node->key[1] << ")" << endl;
+
+        if (!node->isLeaf()) {
+            ++tabs;
+            print(node->child[0], tabs);
+            print(node->child[1], tabs);
+            print(node->child[2], tabs);
+        }
+    }
+
+public:
+    TwoThreeNode *root;
+
+
+    TwoThreeNode* findSpot(TwoThreeNode *node, string data) {
+        if (node == NULL) return NULL;
+
+        while (!node->isLeaf()) {
+            if (node->key[0] == data || node->key[1] == data)
+                return NULL;
+            if (node->key[0] == "" || data < node->key[0])
+                node = node->child[0];
+            else if (node->key[1] == "" || data < node->key[1])
+                node = node->child[1];
+            else
+                node = node->child[2];
+        }
+
+        if (node->key[0] == data) return NULL;
+        return node->parent;
+    }
+
+
+    TwoThreeNode* findSpot_diapason(TwoThreeNode *node, string start, string end) {
+        if (node == NULL) return NULL;
+
+        while (!node->isLeaf()) {
+            if ((start <= node->key[0] && node->key[0] <= end) || (start <= node->key[1] && node->key[1] <= end))
+                return NULL;
+            if (node->key[0] == "" || end < node->key[0])
+                node = node->child[0];
+            else if (node->key[1] == "" || end < node->key[1])
+                node = node->child[1];
+            else
+                node = node->child[2];
+        }
+
+        if (start <= node->key[0] && node->key[0] <= end) return NULL;
+        return node->parent;
+    }
+
+
+    TwoThreeTree() {
+        root = new TwoThreeNode();
+        root->child[0] = new TwoThreeNode();
+        root->child[0]->parent = root;
+    }
+
+
+    bool insert(string data) {
+        TwoThreeNode *newNode = new TwoThreeNode(data);
+        TwoThreeNode *spot = root->child[0];
+
+        if (spot->child[0] == NULL) {
+
+            newNode->parent = spot;
+            spot->child[0] = newNode;
+        }
+        else {
+            spot = findSpot(spot, data);
+            if (spot == NULL) return false;
+
+            spot->insert(new TwoThreeNode(data), data);
+        }
+
+        return true;
+    }
+
+
+    void print() {
+        print(root->child[0]);
+        cout << endl;
+    }
+
+
+    void create(int count) {
+        string word;
+        for(int i = 0; i < count; i++) {
+            int rand = rand_num(RAND) + 1;
+            word = "";
+            for(int j = 0; j < rand; j++)
+                word += char(65 + rand_num(rand) + 1);
+            insert(word);
+        }
+    }
+
+    void demo(int count) {
+        create(count);
+        cout << "created random avl tree" << endl;
+        print();
+        cout << "finded 1/4 elements" << endl;
+        for(int i = 0; i < count / 4; i++)
+            findSpot(root, root->key[0]);
+    }
+
+    void benchmark() {
+        int N = 6;
+        using namespace std::chrono;
+        duration<double> time_span;
+        float t;
+        do {
+            high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+            create(N);
+
+            for(int i = 0; i < N / 4; i++)
+                findSpot(root, root->key[0]);
+
+            high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+            time_span = duration_cast<duration<double>>(t2 - t1);
+            t = time_span.count();
+            N = N * 2;
+        }
+
+        while(t < 5);
+        cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+        cout << "N = " << N << "\n";
+    }
+};
 
 
 
@@ -784,13 +1134,16 @@ int main() {
     ArrayList* arr;
     BinTree* bin;
     Tree avl;
-    AVLNode* finded_avl;
+    TwoThreeTree TTTree;
+
 
     string data;
     string second;
     Node* finded_linked;
     int finded_array;
     BinNode* finded_bin;
+    AVLNode* finded_avl;
+    TwoThreeNode* finded_ttt;
     int count;
 
     int choice = 0;
@@ -900,6 +1253,7 @@ int main() {
                         cout << "enter count of elements" << endl;
                         cin >> count;
                         demo_linked_list(count);
+                        created = true;
                         break;
 
                     case 9:
@@ -992,6 +1346,7 @@ int main() {
                         cout << "enter count of elements" << endl;
                         cin >> count;
                         demo_array_list(count);
+                        created = true;
                         break;
 
                     case 9:
@@ -1084,6 +1439,7 @@ int main() {
                         cout << "enter count of elements" << endl;
                         cin >> count;
                         demo_bin_tree(count);
+                        created = true;
                         break;
 
                     case 9:
@@ -1116,6 +1472,7 @@ int main() {
                         cout << "here no delete!" << endl;
                         break;
                     }
+
                     case 4: {
                         std::cout << "Enter value to be finded: ";
                         std::cin >> data;
@@ -1142,11 +1499,11 @@ int main() {
 
                     case 6: {
                         if (avl.empty()) {
-                            std::cout << "Tree is empty!" << std::endl;
+                            cout << "Tree is empty!" << endl;
                         } else {
-                            std::cout << "Balanced AVL Tree:" << std::endl;
+                            cout << "Balanced AVL Tree:" << endl;
                             avl.display();
-                            std::cout << std::endl;
+                            cout << std::endl;
                         }
                         break;
                     }
@@ -1156,6 +1513,17 @@ int main() {
                         cin >> count;
                         avl.create(count);
                         created = true;
+                        break;
+
+                    case 8:
+                        cout << "enter count of elements: " << endl;
+                        cin >> count;
+                        avl.demo(count);
+                        created = true;
+                        break;
+
+                    case 9:
+                        avl.benchmark();
                         break;
 
                     case 10: {
@@ -1170,9 +1538,84 @@ int main() {
 
             case 5:
 
+                switch(choice) {
+                    case 1: {
+                        created = true;
+                    }
+                    case 2: {
+                        std::cout << "Enter value to be added: ";
+                        std::cin >> data;
+                        TTTree.insert(data);
+                        break;
+                    }
+
+                    case 3: {
+                        cout << "here no delete!" << endl;
+                        break;
+                    }
+
+                    case 4: {
+                        std::cout << "Enter value to be finded: ";
+                        std::cin >> data;
+                        finded_ttt = TTTree.findSpot(TTTree.root, data);
+                        if(!finded_ttt)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_ttt->key[0] << endl;
+                        break;
+                    }
+
+                    case 5: {
+                        cout << "enter diapason start to find" << endl;
+                        cin >> data;
+                        cout << "enter diapason end to find" << endl;
+                        cin >> second;
+                        finded_ttt = TTTree.findSpot_diapason(TTTree.root,data, second);
+                        if(!finded_ttt)
+                            cout << "No such an element in the tree!" << endl;
+                        else
+                            cout << "This is data from finded element: " << finded_ttt->key[0] << endl;
+                        break;
+                    }
+
+                    case 6: {
+                        cout << "TwoThreeTree: " << endl;
+                        TTTree.print();
+                        break;
+                    }
+
+                    case 7:
+                        cout << "enter number of random elements: " << endl;
+                        cin >> count;
+                        TTTree.create(count);
+                        created = true;
+                        break;
+
+                    case 8:
+                        cout << "enter count of elements: " << endl;
+                        cin >> count;
+                        TTTree.demo(count);
+                        created = true;
+                        break;
+
+                    case 9:
+                        TTTree.benchmark();
+                        break;
+
+                    case 10: {
+                        exit(0);
+                        break;
+                    }
+
+                    default:
+                        std::cout << "Wrong choice, please try again." << std::endl;
+                }
+                break;
 
             case 6:
 
+                exit(0);
+                break;
 
             default:
                 std::cout << "Wrong choice, please try again." << std::endl;
