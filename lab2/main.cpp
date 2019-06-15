@@ -1,5 +1,10 @@
 #include <bits/stdc++.h>
 
+
+#include<windows.h>
+#include<stdio.h>
+#include<tchar.h>
+
 //using namespace std;
 
 using std::cin;
@@ -7,6 +12,10 @@ using std::cout;
 using std::vector;
 using std::swap;
 using std::string;
+
+// Use to convert bytes to MB
+#define DIV 1048576
+#define WIDTH 7
 
 struct rectangle{
     float x1; // х coordinate of top-left angle
@@ -402,6 +411,22 @@ int main() {
                     while(N * 2 < MAX_SIZE);
                     create = true;
                     cout << "\n" <<  "It took me " << t << " seconds. \n";
+                    MEMORYSTATUSEX statex;
+
+                    statex.dwLength = sizeof (statex);
+
+                    GlobalMemoryStatusEx (&statex);
+
+
+                    _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
+
                     cout << "N = " << N << "\n";
                 }
                 if(create) {
@@ -502,7 +527,25 @@ int main() {
                     //only 1 s because memory limit
                     while(t < 1);
                     create = true;
+
                     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+
+                    MEMORYSTATUSEX statex;
+
+                    statex.dwLength = sizeof (statex);
+
+                    GlobalMemoryStatusEx (&statex);
+
+
+                    _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
+
                     cout << "N = " << N << "\n";
                 }
                 if(create) {
@@ -603,6 +646,23 @@ int main() {
                     while(t < 10);
                     create = true;
                     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
+
+                    MEMORYSTATUSEX statex;
+
+                    statex.dwLength = sizeof (statex);
+
+                    GlobalMemoryStatusEx (&statex);
+
+
+                    _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
+                    _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
+                    _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
+
                     cout << "N = " << N << "\n";
                 }
                 if(create) {
