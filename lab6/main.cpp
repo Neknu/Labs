@@ -8,6 +8,16 @@
 #include <iomanip>
 
 
+#include<windows.h>
+#include<stdio.h>
+#include<tchar.h>
+
+
+// Use to convert bytes to MB
+#define DIV 1048576
+#define WIDTH 7
+
+
 using std::string;
 using std::cin;
 using std::cout;
@@ -25,6 +35,24 @@ int rand_num(int max) {
     return int(dist(gen));
 }
 
+
+void print_memory() {
+    MEMORYSTATUSEX statex;
+
+    statex.dwLength = sizeof (statex);
+
+    GlobalMemoryStatusEx (&statex);
+
+
+    _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
+    _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
+    _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
+    _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
+    _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
+    _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
+    _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
+    _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
+}
 
 //task 1
 
@@ -181,6 +209,7 @@ void benchmark_linked_list() {
     }
 
     while(t < 5);
+    print_memory();
     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
     cout << "N = " << N << "\n";
 }
@@ -333,6 +362,7 @@ void benchmark_array_list() {
     }
 
     while(t < 5);
+    print_memory();
     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
     cout << "N = " << N << "\n";
 }
@@ -552,9 +582,6 @@ void benchmark_bin_tree() {
 
         BinTree* bin = create_random_bin_tree(N);
 
-        for(int i = 0; i < N / 2; i ++)
-            delete_element_bin_tree(bin, bin->root->data);
-
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
         time_span = duration_cast<duration<double>>(t2 - t1);
@@ -563,6 +590,7 @@ void benchmark_bin_tree() {
     }
 
     while(t < 5);
+    print_memory();
     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
     cout << "N = " << N << "\n";
 }
@@ -806,6 +834,7 @@ void Tree::benchmark() {
     }
 
     while(t < 5);
+    print_memory();
     cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
     cout << "N = " << N << "\n";
 }
@@ -1119,6 +1148,7 @@ public:
         }
 
         while(t < 5);
+        print_memory();
         cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
         cout << "N = " << N << "\n";
     }

@@ -4,6 +4,14 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include<windows.h>
+#include<stdio.h>
+#include<tchar.h>
+
+// Use to convert bytes to MB
+#define DIV 1048576
+#define WIDTH 7
+
 
 using std::string;
 using std::cout;
@@ -253,12 +261,29 @@ int main()
                     combine_sort(arr, 0 , N - 1, 10);
 
                 high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                //cout << N << "   ";
+               // cout << N << " \n  ";
+
                 time_span = duration_cast<duration<double>>(t2 - t1);
                 t = time_span.count();
             }
 
             while(t < 0.05);
+            MEMORYSTATUSEX statex;
+
+            statex.dwLength = sizeof (statex);
+
+            GlobalMemoryStatusEx (&statex);
+
+
+            _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
+            _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
+            _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
+            _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
+            _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
+            _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
+            _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
+            _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
+
             cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
             cout << "N = " << N << "\n";
         }

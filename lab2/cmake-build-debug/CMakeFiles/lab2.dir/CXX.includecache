@@ -9,4 +9,10 @@
 D:/labsGit/Labs/lab2/main.cpp
 bits/stdc++.h
 -
+windows.h
+-
+stdio.h
+-
+tchar.h
+-
 
