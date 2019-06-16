@@ -3,6 +3,7 @@
 #include <ctime>
 #include <random>
 #include <algorithm>
+#include <functional>
 #include <chrono>
 #include<windows.h>
 #include<stdio.h>
@@ -239,53 +240,112 @@ int main()
             print_array(arr, N);
         }
         if(operation == "benchmark") {
-            int N = 6;
-            cout << "processing..";
-            using namespace std::chrono;
-            duration<double> time_span;
-            float t;
-            do {
-                N = N * 2;
-                random_words(arr, N + 5); // generating random array
-                high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-                //add this line to try with sorted array
-                //std::sort(arr, arr + N);
-                if(algorithm == "insertion")
-                    insertion_sort(arr, 0 , N - 1);
-                if(algorithm == "quick")
-                    quick_sort(arr, 0 , N - 1);
-                if(algorithm == "merge")
-                    merge_sort(arr, 0 , N - 1);
+            for (int i = 0; i < 3; i++) {
+                int comb_step = 20;
+                int N = 6;
+                cout << "processing..";
+                using namespace std::chrono;
+                duration<double> time_span;
+                float t;
                 if(algorithm == "combine")
-                    combine_sort(arr, 0 , N - 1, 10);
+                    cout << "combine step = " << comb_step << "\n";
 
-                high_resolution_clock::time_point t2 = high_resolution_clock::now();
-               // cout << N << " \n  ";
+                if(i == 0) {
+                    cout << "Random array benchmark: " << "\n";
+                }
+                if(i == 1) {
+                    cout << "sorted asc array benchmark: " << "\n";
+                }
+                if(i == 2) {
+                    cout << "sorted desc array benchmark: " << "\n";
+                }
+                do {
+                    N = N * 2;
+                    random_words(arr, N + 5); // generating random array
+                    if(i == 1) {
 
-                time_span = duration_cast<duration<double>>(t2 - t1);
-                t = time_span.count();
+                        sort(arr, arr + N + 5);
+                    }
+                    if(i == 2) {
+
+                        sort(arr, arr + N + 5, std::greater<string>());
+                    }
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    //add this line to try with sorted array
+                    //std::sort(arr, arr + N);
+                    if (algorithm == "insertion")
+                        insertion_sort(arr, 0, N - 1);
+                    if (algorithm == "quick")
+                        quick_sort(arr, 0, N - 1);
+                    if (algorithm == "merge")
+                        merge_sort(arr, 0, N - 1);
+                    if (algorithm == "combine")
+                        combine_sort(arr, 0, N - 1, comb_step);
+
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    // cout << N << " \n  ";
+
+                    time_span = duration_cast<duration<double>>(t2 - t1);
+                    t = time_span.count();
+                } while (t < 0.01);
+                while (t < 0.05) {
+                    N = int(N * 1.05);
+                    random_words(arr, N + 5); // generating random array
+                    if(i == 1) {
+
+                        sort(arr, arr + N + 5);
+                    }
+                    if(i == 2) {
+
+                        sort(arr, arr + N + 5, std::greater<string>());
+                    }
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    //add this line to try with sorted array
+                    //std::sort(arr, arr + N);
+                    if (algorithm == "insertion")
+                        insertion_sort(arr, 0, N - 1);
+                    if (algorithm == "quick")
+                        quick_sort(arr, 0, N - 1);
+                    if (algorithm == "merge")
+                        merge_sort(arr, 0, N - 1);
+                    if (algorithm == "combine")
+                        combine_sort(arr, 0, N - 1, 10);
+
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+                    time_span = duration_cast<duration<double>>(t2 - t1);
+                    t = time_span.count();
+
+                    cout << "N = " << N << " \n  ";
+                    cout << "time = " << t << " \n  ";
+                    cout << endl;
+
+
+                }
+                MEMORYSTATUSEX statex;
+
+                statex.dwLength = sizeof(statex);
+
+                GlobalMemoryStatusEx(&statex);
+
+
+                _tprintf(TEXT("There is  %*ld percent of memory in use.\n"), WIDTH, statex.dwMemoryLoad);
+                _tprintf(TEXT("There are %*I64d total Mbytes of physical memory.\n"), WIDTH, statex.ullTotalPhys / DIV);
+                _tprintf(TEXT("There are %*I64d free Mbytes of physical memory.\n"), WIDTH, statex.ullAvailPhys / DIV);
+                _tprintf(TEXT("There are %*I64d total Mbytes of paging file.\n"), WIDTH, statex.ullTotalPageFile / DIV);
+                _tprintf(TEXT("There are %*I64d free Mbytes of paging file.\n"), WIDTH, statex.ullAvailPageFile / DIV);
+                _tprintf(TEXT("There are %*I64d total Mbytes of virtual memory.\n"), WIDTH,
+                         statex.ullTotalVirtual / DIV);
+                _tprintf(TEXT("There are %*I64d free Mbytes of virtual memory.\n"), WIDTH,
+                         statex.ullAvailVirtual / DIV);
+                _tprintf(TEXT("There are %*I64d free Mbytes of extended memory.\n"), WIDTH,
+                         statex.ullAvailExtendedVirtual / DIV);
+
+                cout << "\n" << "It took me " << time_span.count() << " seconds. \n";
+                cout << "N = " << N << "\n";
             }
-
-            while(t < 0.05);
-            MEMORYSTATUSEX statex;
-
-            statex.dwLength = sizeof (statex);
-
-            GlobalMemoryStatusEx (&statex);
-
-
-            _tprintf (TEXT("There is  %*ld percent of memory in use.\n"),WIDTH, statex.dwMemoryLoad);
-            _tprintf (TEXT("There are %*I64d total Mbytes of physical memory.\n"),WIDTH,statex.ullTotalPhys/DIV);
-            _tprintf (TEXT("There are %*I64d free Mbytes of physical memory.\n"),WIDTH, statex.ullAvailPhys/DIV);
-            _tprintf (TEXT("There are %*I64d total Mbytes of paging file.\n"),WIDTH, statex.ullTotalPageFile/DIV);
-            _tprintf (TEXT("There are %*I64d free Mbytes of paging file.\n"),WIDTH, statex.ullAvailPageFile/DIV);
-            _tprintf (TEXT("There are %*I64d total Mbytes of virtual memory.\n"),WIDTH, statex.ullTotalVirtual/DIV);
-            _tprintf (TEXT("There are %*I64d free Mbytes of virtual memory.\n"),WIDTH, statex.ullAvailVirtual/DIV);
-            _tprintf (TEXT("There are %*I64d free Mbytes of extended memory.\n"),WIDTH, statex.ullAvailExtendedVirtual/DIV);
-
-            cout << "\n" <<  "It took me " << time_span.count() << " seconds. \n";
-            cout << "N = " << N << "\n";
         }
         if(operation == "exit") {
             return 0;
